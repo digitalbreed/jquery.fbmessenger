@@ -1,0 +1,24 @@
+{
+  "name": "jquery.fbmessenger",
+  "description": "Fake Facebook Messenger interactions with a simple jQuery plugin!",
+  "main": "./dist/jquery.fbmessenger.min.js",
+  "authors": [
+    "Matthias Gall <matthias.gall@digitalbreed.com> (https://digitalbreed.com/)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "jquery",
+    "plugin",
+    "facebook",
+    "messenger",
+    "iphone"
+  ],
+  "homepage": "https://github.com/digitalbreed/jquery.fbmessenger",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

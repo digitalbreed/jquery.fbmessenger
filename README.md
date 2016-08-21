@@ -89,7 +89,6 @@ I plan to work on these items very soon. If you need one of those to put jQuery.
 * Generic template support
 * Button template support
 * Quick replies
-* Bower
 * Resize support
 * Style updates
 
