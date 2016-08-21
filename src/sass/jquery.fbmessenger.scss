@@ -1,0 +1,330 @@
+$jsm-blue: #007aff;
+$jsm-light-gray: #959595;
+$jsm-dark-gray: #8b858c;
+
+/**
+	Clearfix mixin
+*/
+@mixin clearfix {
+	&:before, &:after {
+		content: "";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+/**
+	Hidden element class
+*/
+.jsm-hide {
+	display: none;
+}
+
+/**
+	Wrapper for all phone screen content
+*/
+.jsm-iphone-content {
+	text-align: left;
+	font-family: 'San Francisco', 'Helvetica Neue', Helvetica, sans-serif;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+/**
+	Combined status and navigation bar
+*/
+.jsm-status-navbar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 9%;
+	background: #f9f9f9;
+	border-bottom: 1px solid #b2b2b2;
+	z-index: 10;
+
+	.jsm-status-bar {
+		width: 100%;
+		height: 30%;
+		text-align: center;
+
+		.jsm-carrier {
+			position: absolute;
+			top: 0;
+			left: 2.1%;
+
+			.jsm-carrier-ring {
+				display: inline-block;
+				margin-top: -0.15em;
+				margin-right: -0.15em;
+				width: 0.4em;
+				height: 0.4em;
+				border: 1px solid #000;
+				border-radius: 50%;
+
+				&.closed {
+					background: #000;
+				}
+			}
+			.jsm-carrier-name {
+				margin-left: 0.1em;
+			}
+		}
+		.jsm-clock {
+			font-weight: bold;
+		}
+		.jsm-battery {
+			position: absolute;
+			top: 0;
+			right: 2.1%;
+
+			.jsm-battery-image {
+				display: inline-block;
+				height: 0.8em;
+				width: auto;
+				vertical-align: middle;
+			}
+		}
+	}
+
+	.jsm-nav-title {
+		width: 100%;
+		text-align: center;
+		padding: 0.5% 0;
+
+		.jsm-nav-title-bot-name {
+			font-size: 120%;
+			margin-bottom: 0.2em;
+		}
+		.jsm-nav-title-replies-in {
+			color: $jsm-light-gray;
+		}
+	}
+	.jsm-nav-left, .jsm-nav-right {
+		position: absolute;
+		top: 50%;
+		color: $jsm-blue;
+		font-size: 140%;
+		line-height: 1em;
+
+		img {
+			width: 0.8em;
+			height: auto;
+			vertical-align: middle;
+			margin: -0.2em 0.2em 0 0;
+		}
+	}
+	.jsm-nav-left {
+		left: 2.1%;
+	}
+	.jsm-nav-right {
+		right: 2.1%;
+	}
+}
+
+.jsm-input-bar {
+	flex: 1;
+	width: 100%;
+	min-height: 6.7%;
+	border-top: 1px solid #b2b2b2;
+	background: #fff;
+	z-index: 10;
+
+	.jsm-get-started-button, .jsm-input-message {
+		font-size: 150%;
+		color: $jsm-blue;
+		text-align: center;
+		line-height: 2.5em;
+	}
+	.jsm-input-message {
+		color: $jsm-light-gray;
+		position: relative;
+
+		.jsm-persistent-menu {
+			position: absolute;
+			top: 33%;
+			left: 4%;
+			width: 6%;
+			height: auto;
+		}
+	}
+}
+
+.jsm-chat-content {
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+
+	/**
+		Displayed before the Get Started button is pressed.
+	*/
+	.jsm-bot-welcome-message {
+		position: absolute;
+		top: 50%;
+		text-align: center;
+		color: $jsm-light-gray;
+		font-size: 120%;
+		padding: 0 2.1%;
+	}
+
+	/**
+		Displayed at the top of a chat, contains information about the chat partner or bot.
+	*/
+	.jsm-bot-info {
+		@include clearfix;
+
+		margin-top: 22%;
+		border-bottom: 1px solid #cdcdd1;
+		clear: both;
+		margin-bottom: 1em;
+
+		img {
+			float: left;
+			margin: 0 1.5em 1.5em 1.5em;
+			width: 6em;
+			height: 6em;
+			border-radius: 50%;
+		}
+
+		.jsm-bot-info-name {
+			font-size: 160%;
+			margin: 0.15em 0;
+		}
+		.jsm-bot-info-likes, .jsm-bot-info-category {
+			font-size: 120%;
+			margin-bottom: 0.25em;
+			font-weight: 200;
+		}
+		.jsm-bot-info-category {
+			color: $jsm-light-gray;
+		}
+	}
+
+	/**
+		Wrapper for all subsequent chat items sent by one user
+	*/
+	.jsm-user-wrapper {
+		position: relative;
+		margin-top: 0.5em;
+
+		.jsm-user-icon {
+			position: absolute;
+			left: 0.5em;
+			width: 3em;
+			height: 3em;
+
+			img.jsm-bot-logo {
+				width: 3em;
+				height: 3em;
+				border-radius: 50%;
+			}
+			img.jsm-messenger-flash {
+				position: absolute;
+				width: 1.5em;
+				height: 1.5em;
+				z-index: 5;
+				top: 1.8em;
+				left: 1.8em;
+			}
+		}
+	}
+
+	/**
+		Wrapper for a chat row
+	*/
+	.jsm-chat-row {
+		@include clearfix;
+	}
+
+	/**
+		Time stamp
+	*/
+	.jsm-chat-timestamp {
+		margin: 0 0 0.5em;
+		color: $jsm-light-gray;
+		text-align: center;
+	}
+
+	/**
+		Standard message bubbles.
+	*/
+	.jsm-chat-message {
+		display: table;
+		padding: 0.75em 1em;
+		border-radius: 1.5em;
+		margin-bottom: 0.15em;
+		font-size: 130%;
+		max-width: 75%;
+
+		&.left {
+			float: left;
+			background: #f1f0f0;
+			margin-left: 3em;
+
+			&.has-previous {
+				border-top-left-radius: 0.25em;
+			}
+			&.has-next {
+				border-bottom-left-radius: 0.25em;
+			}
+		}
+		&.right {
+			float: right;
+			background: $jsm-blue;
+			color: #fff;
+			margin-right: 5%;
+
+			&.has-previous {
+				border-top-right-radius: 0.25em;
+			}
+			&.has-next {
+				border-bottom-right-radius: 0.25em;
+			}
+		}
+	}
+
+	.jsm-typing-indicator {
+		span {
+			background: $jsm-dark-gray;
+			height: 0.5em;
+			width: 0.5em;
+			border-radius: 50%;
+			display: inline-block;
+			margin-right: 0.25em;
+			animation: jsm-typing-indicator-anim 2s infinite;
+		}
+		span:nth-child(1) {
+			animation-delay: 0s;
+		}
+		span:nth-child(2) {
+			animation-delay: 0.15s;
+		}
+		span:nth-child(3) {
+			animation-delay: 0.3s;
+			margin-right: 0;
+		}
+	}
+}
+
+@keyframes jsm-typing-indicator-anim {
+    0% {
+    	transform: translate(0, 0);
+    }
+    20% {
+    	transform: translate(0, -0.5em);
+    }
+    40% {
+    	transform: translate(0, 0);
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "jquery.fbmessenger",
+  "version": "0.0.1",
+  "description": "Fake Facebook Messenger interactions with a simple jQuery plugin!",
+  "author": "Matthias Gall <matthias.gall@digitalbreed.com> (https://digitalbreed.com/)",
+  "devDependencies": {
+    "bower": "",
+    "grunt": "",
+    "grunt-cli": "",
+    "grunt-contrib-copy": "",
+    "grunt-contrib-uglify": "",
+    "grunt-contrib-watch": "",
+    "grunt-sass": ""
+  }
+}

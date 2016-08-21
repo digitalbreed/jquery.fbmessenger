@@ -1,0 +1,83 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>jQuery.FbMessenger demo</title>
+
+		<style>
+			body, html {
+				margin: 0;
+				padding: 0;
+				background: #fff;
+			}
+			div.vcenter {
+				/*margin: 12.5vh auto;
+				height: 75vh;*/
+				margin: 5vh auto 0;
+				height: 95vh;
+				width: 100%;
+				text-align: center;
+			}
+			div.iphone-wrapper {
+				display: inline-block;
+				width: auto;
+				height: 100%;
+				position: relative;
+			}
+			div.iphone-wrapper img {
+				max-height: 100%;
+				width: auto;
+			}
+			div.screen-content {
+				position: absolute;
+				top: 10.88%;
+				bottom: 20%;
+				left: 14.7%;
+				right: 16.8%;
+				background: #000;
+				border-radius: 3px;
+				overflow: hidden;
+			}
+		</style>
+
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		<script src="../src/js/jquery.fbmessenger.js"></script>
+		<link rel="stylesheet" href="../dist/jquery.fbmessenger.css">
+	</head>
+	<body>
+		<div class="vcenter">
+			<div class="iphone-wrapper">
+				<img alt="iPhone 6 white" src="https://i.imgsafe.org/a2ba6b06b3.png" />
+				<div class="screen-content">
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				var now = new Date();
+				$('.screen-content').fbMessenger()
+					.fbMessenger('start', 2000)
+					.fbMessenger('message', 'user', 'Get Started', now, 250)
+					.fbMessenger('typingIndicator', 500)
+					.fbMessenger('message', 'bot', 'Hey there! I am the jQuery.fbMessenger demo.', now, 3000)
+					.fbMessenger('typingIndicator', 1000)
+					.fbMessenger('message', 'bot', 'You can use me to create short demos of a Messenger interaction.', now, 4000)
+					.fbMessenger('message', 'user', 'Wow, sounds awesome!', now, 4000)
+					.fbMessenger('typingIndicator', 1000)
+					.fbMessenger('message', 'bot', 'It is!', now, 1000)
+					.fbMessenger('typingIndicator', 500)
+					.fbMessenger('message', 'bot', 'You can build quick demos of your user journey without having to record your actual bot.', now, 3000)
+					.fbMessenger('typingIndicator', 250)
+					.fbMessenger('message', 'bot', 'Or gracefully degrade to this if the browser can\'t play a video.', now, 2000)
+					.fbMessenger('typingIndicator', 250)
+					.fbMessenger('message', 'bot', 'E.g. on slow mobile connections.', now, 1000)
+					.fbMessenger('message', 'user', 'I totally need this!', now, 4000)
+					.fbMessenger('message', 'user', 'Now let\'s play this again.', now, 4000)
+					.fbMessenger('message', 'user', 'One more time!', now, 3000)
+					.fbMessenger('run');
+			});
+		</script>
+	</body>
+</html>
