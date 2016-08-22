@@ -107,6 +107,12 @@
 			</div>\
 		');
 
+		// Detect iOS devices
+		var agent = navigator.userAgent;
+		if (agent.indexOf('iPhone') > 0 || agent.indexOf('iPod') > 0) {
+			this.$element.find('.jsm-chat-content').addClass('ios');
+		}
+
 		// Safari doesn't provide width immediately, but height
 		// TODO recalculate on resize
 		var width = this.$element.height() * 0.5622;

@@ -220,6 +220,16 @@ $jsm-dark-gray: #8b858c;
 	}
 
 	/**
+		iOS won't display scrollbars, so we don't need to work around it.
+	*/
+	&.ios {
+		width: 100%;
+		.jsm-bot-welcome-message {
+			margin-right: 0;
+		}
+	}
+
+	/**
 		Displayed at the top of a chat, contains information about the chat partner or bot.
 	*/
 	.jsm-bot-info {
