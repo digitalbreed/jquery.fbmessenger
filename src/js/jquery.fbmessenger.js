@@ -333,7 +333,7 @@
 					height: 0
 				}, function() {
 					that.options.state.quickRepliesDisplayed = false;
-					$(this).addClass('jsm-hide').css('height', null);
+					$(this).addClass('jsm-hide').css('height', '');
 				});
 			}, 500 + 100 + 100);
 		} else {
