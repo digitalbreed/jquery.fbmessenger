@@ -4,6 +4,8 @@
 
 ![Interaction produced by jQuery.fbMessenger](https://github.com/digitalbreed/jquery.fbmessenger/raw/develop/demo/jquery.fbmessenger.gif)
 
+Please note that this plugin is meant for demonstration purposes only and was not built to reproduce a pixel-perfect Messenger experience.
+
 ## Usage Example
 
 Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your project; then use `$.fn.fbMessenger` on the target element to initialize and schedule actions on it.
@@ -34,15 +36,17 @@ Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your 
           // options go here
         })
         // Schedule some interaction
-        .fbMessenger('start', 1000)
-        .fbMessenger('message', 'user', 'Get Started', null, 250)
-        .fbMessenger('typingIndicator', 250)
-        .fbMessenger('message', 'bot', 'Hello my friend, I am a small jQuery plugin! I hope you like it.', null, 1500)
-        .fbMessenger('typingIndicator', 0)
-        .fbMessenger('message', 'bot', 'If you find my services useful, please star me on GitHub!', null, 1500)
-        .fbMessenger('message', 'user', 'Hi, nice to meet you! I definitely will do!', null, 2000)
-        .fbMessenger('typingIndicator', 0)
-        .fbMessenger('message', 'bot', 'Thanks!', null, 1000)
+        .fbMessenger('start', { delay: 1000 })
+        .fbMessenger('message', 'user', 'Get Started', { delay: 250 })
+        .fbMessenger('typingIndicator', { delay: 250 })
+        .fbMessenger('message', 'bot', 'Hello my friend, I am a small jQuery plugin! I hope you like it.', { delay: 1500 })
+        .fbMessenger('typingIndicator', { delay: 0 })
+        .fbMessenger('message', 'bot', 'If you find my services useful, please star me on GitHub!', { delay: 1500 })
+        .fbMessenger('message', 'user', 'Hi, nice to meet you! I definitely will do!', { delay: 2000 })
+        .fbMessenger('typingIndicator', { delay: 0 })
+        .fbMessenger('message', 'bot', 'Really?', { delay: 1000 })
+        .fbMessenger('showQuickReplies', [ 'Yes!', 'Maybe...', 'Nope, just wanted to be polite' ], { delay: 2000 })
+        .fbMessenger('selectQuickReply', 0, { delay: 1000 })
         // And trigger the execution
         .fbMessenger('run');
       });
@@ -55,12 +59,14 @@ Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your 
 
 | Method | Description
 | ------ | -----------
-| `('start', offset)` | Replaces the welcome screen with the actual chat in order to send messages, similarly as if the user touches the "Get Started" button.
-| `('message', user, text, timestamp, offset)` | Creates a new message sent by user with symbolic name `user` with text `text` and (optional) timestamp `timestamp` (must be type `Date`).
-| `('typingIndicator', offset)` | Enables the typing indicator for the left user. It remains turned on until a new message is sent by the left user.
+| `('start', options)` | Replaces the welcome screen with the actual chat in order to send messages, similarly as if the user touches the "Get Started" button.
+| `('message', user, text, options)` | Creates a new message sent by user with symbolic name `user` with text `text` and (optional) timestamp `options.timestamp` (must be type `Date`).
+| `('showQuickReplies', quickReplies, options)` | Moves the quick reply options into view, where `quickReplies` is an array of strings.
+| `('selectQuickReply', quickReplyIndex, options)` | Selects the quick reply with index `quickReplyIndex`.
+| `('typingIndicator', options)` | Enables the typing indicator for the left user. It remains turned on until a new message is sent by the left user.
 | `('run')` | Executes the previously scheduled steps.
 
-The `offset` parameter is optional. If it is provided, execution is halted until `run` is called and every step is delayed `offset` milliseconds to the previous step. If it's not provided, the corresponding action is executed immediately.
+The `options` parameter is optional and may contain an attribute `delay`. If `delay` is provided, execution is halted until `run` is called and every step is delayed `delay` milliseconds to the previous step. If it's not provided, the corresponding action is executed immediately.
 
 ## Options
 
@@ -88,9 +94,10 @@ I plan to work on these items very soon. If you need one of those to put jQuery.
 * Message sent/received/ last read indicator
 * Generic template support
 * Button template support
-* Quick replies
+* ~~Quick replies~~ (available since v0.0.2 2016-08-22)
 * Resize support
 * Style updates
+* Localization
 
 ### Long term
 
@@ -100,6 +107,8 @@ Better don't hold your breath for these ones. If you're in need of one of those,
 * "Browser"
 * Receipt template support
 * Image/audio/file attachments
+* Build an editor around it and allow exporting a HTML file, for people without any coding experience
+* Airline templates (least priority, as they need lots of customization for very specific use cases)
 
 ## Legal
 

@@ -37,19 +37,20 @@
 		state: {
 			welcomeMessageDisplayed: true,
 			lastTimestamp: null,
-			lastMessageBy: null
+			lastMessageBy: null,
+			quickRepliesDisplayed: false
 		}
 	};
 
 	function Plugin(element, options) {
 		this.element = element;
+		this.$element = $(element);
 		this.options = $.extend(true, {}, DEFAULTS, options);
 		this.init();
 	}
 
 	Plugin.prototype.init = function() {
-		var $element = $(this.element);
-		$element.append('\
+		this.$element.append('\
 			<div class="jsm-iphone-content">\
 				<div class="jsm-status-navbar">\
 					<div class="jsm-status-bar">\
@@ -90,7 +91,11 @@
 						<div class="jsm-bot-info-category">' + this.options.botCategory + '</div>\
 					</div>\
 				</div>\
-				<div class="jsm-input-bar">\
+				<div class="jsm-bottom-bar">\
+					<div class="jsm-quick-replies jsm-hide">\
+						<div class="jsm-quick-replies-container">\
+						</div>\
+					</div>\
 					<div class="jsm-get-started-button">\
 						Get started\
 					</div>\
@@ -104,23 +109,23 @@
 
 		// Safari doesn't provide width immediately, but height
 		// TODO recalculate on resize
-		var width = $element.height() * 0.5622;
+		var width = this.$element.height() * 0.5622;
 		var fontSize = Math.floor(width / 750 * 24);
-		$element.css('font-size', fontSize + 'px');
+		this.$element.css('font-size', fontSize + 'px');
 	}
 
-	Plugin.prototype.start = function(offset) {
-		if (typeof offset === 'undefined') {
+	Plugin.prototype.start = function(options) {
+		if (options === undefined || options.delay === undefined) {
 			if (this.options.state.welcomeMessageDisplayed) {
-				$(this.element).find('.jsm-bot-welcome-message,.jsm-get-started-button').addClass('jsm-hide');
-				$(this.element).find('.jsm-input-message').removeClass('jsm-hide');
+				this.$element.find('.jsm-bot-welcome-message,.jsm-get-started-button').addClass('jsm-hide');
+				this.$element.find('.jsm-input-message').removeClass('jsm-hide');
 				this.options.state.welcomeMessageDisplayed = false;
 			}
 		} else {
 			this.options.script.push({
 				method: 'start',
 				args: [],
-				offset: offset
+				delay: options.delay
 			})
 		}
 		return this;
@@ -138,16 +143,29 @@
 		}
 	}
 
+	Plugin.prototype._checkQuickReply = function(expected) {
+		if (expected === true && !this.options.state.quickRepliesDisplayed) {
+			$.error('Quick replies are currently not displayed');
+		} else if (expected === false && this.options.state.quickRepliesDisplayed) {
+			$.error('Quick replies are already displayed');
+		}
+	}
+
 	Plugin.prototype._scrollDown = function() {
-		var $element = $(this.element);
-		var scrollHeight = $element.find('.jsm-chat-content').prop('scrollHeight');
-		$element.find('.jsm-chat-content').animate({
+		var scrollHeight = this.$element.find('.jsm-chat-content').prop('scrollHeight');
+		this.$element.find('.jsm-chat-content').animate({
 			scrollTop: scrollHeight
 		}, this.options.scrollTimeMs);
 	}
 
+	Plugin.prototype._clearOptions = function(options) {
+		var result = $.extend({}, options);
+		delete result.delay;
+		return result;
+	}
+
 	Plugin.prototype._addNewContent = function(user, $payload, timestamp) {
-		var $content = $(this.element).find('.jsm-chat-content');
+		var $content = this.$element.find('.jsm-chat-content');
 		$content.find('.jsm-chat-row:has(.jsm-typing-indicator)').remove(); // FIXME don't remove if message is by right user!
 		// Create a user-specific wrapper and create/get the user icon in case of left side
 		var $user = $content.find('.jsm-user-wrapper:last');
@@ -202,31 +220,127 @@
 		this._scrollDown();
 	}
 
-	Plugin.prototype.message = function(user, text, timestamp, offset) {
-		if (typeof offset === 'undefined') {
+	Plugin.prototype.message = function(user, text, options) {
+		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			this._checkUser(user);
 			var sideClass = user === this.options.leftUser ? 'left' : user === this.options.rightUser ? 'right' : '';
-			this._addNewContent(user, $('<div class="jsm-chat-message ' + sideClass + '">' + text + '</div>'), timestamp);
+			this._addNewContent(user, $('<div class="jsm-chat-message ' + sideClass + ' ' + options.className + '">' + text + '</div>'), options.timestamp);
 		} else {
 			this.options.script.push({
 				method: 'message',
-				args: [ user, text, timestamp ],
-				offset: offset
+				args: [ user, text, this._clearOptions(options) ],
+				delay: options.delay
 			});
 		}
 		return this;
 	}
 
-	Plugin.prototype.typingIndicator = function(offset) {
-		if (typeof offset === 'undefined') {
+	Plugin.prototype.typingIndicator = function(options) {
+		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			this._addNewContent(this.options.leftUser, $('<div class="jsm-chat-message left jsm-typing-indicator"><span></span><span></span><span></span></div>'), false);
 		} else {
 			this.options.script.push({
 				method: 'typingIndicator',
 				args: [],
-				offset: offset
+				delay: options.delay
+			});
+		}
+		return this;
+	}
+
+	Plugin.prototype.showQuickReplies = function(quickReplies, options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkQuickReply(false);
+			var $element = this.$element;
+			// Create quick reply options
+			var $quickReplies = $element.find('.jsm-quick-replies-container').empty();
+			$.each(quickReplies, function(index, quickReply) {
+				$quickReplies.append('<div class="jsm-quick-reply-option" style="transition-delay: ' + (index * 0.1).toFixed(1) + 's">' + quickReply + '</div>');
+			});
+			$element.find('.jsm-quick-replies').removeClass('jsm-hide');
+			// Trigger transition to let the options appear
+			var that = this;
+			setTimeout(function() {
+				that._scrollDown();
+				// must be deferred to trigger proper transition
+				$element.find('.jsm-quick-reply-option').addClass('show');
+			}, 10);
+			this.options.state.quickRepliesDisplayed = true;
+		} else {
+			this.options.script.push({
+				method: 'showQuickReplies',
+				args: [ quickReplies, this._clearOptions(options) ],
+				delay: options.delay
+			})
+		}
+		return this;
+	}
+
+	Plugin.prototype.scrollQuickReplies = function(quickReplyIndex, options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkQuickReply(true);
+			var $scroller = this.$element.find('.jsm-quick-replies');
+			var $container = $scroller.find('.jsm-quick-replies-container');
+			var $option = this.$element.find('.jsm-quick-reply-option:nth-child(' + (quickReplyIndex + 1) + ')');
+			var optionPosX = $option.position().left;
+			var target = -1;
+			// Scroll only if quick reply is out of sight
+			if (optionPosX > $scroller.width()) {
+				target = $scroller.width() - $option.outerWidth();
+			} else if (optionPosX < 0) {
+				var padding = ($container.outerWidth() - $container.width()) / 2;
+				target = $scroller.prop('scrollLeft') + optionPosX - padding;
+			}
+			if (target > -1) {
+				var delta = Math.abs($scroller.prop('scrollLeft') - target) * 2;
+				$scroller.animate({
+					scrollLeft: target
+				}, delta);
+			}
+		} else {
+			this.options.script.push({
+				method: 'scrollQuickReplies',
+				args: [ quickReplyIndex, this._clearOptions(options) ],
+				delay: options.delay
+			})
+		}
+	}
+
+	Plugin.prototype.selectQuickReply = function(quickReplyIndex, options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkQuickReply(true);
+			var $element = this.$element;
+			var that = this;
+			var $option = $element.find('.jsm-quick-reply-option:nth-child(' + (quickReplyIndex + 1) + ')').addClass('selected');
+			setTimeout(function() {
+				$element.find('.jsm-quick-reply-option').removeClass('show');
+				setTimeout(function() {
+					that.message(that.options.rightUser, $option.text(), { timestamp: false, className: 'quickreply' });
+					var $message = $element.find('.jsm-chat-message:last');
+					setTimeout(function() {
+						$message.removeClass('quickreply');
+					}, 100);
+				}, 100);
+			}, 500);
+			// Hide quick reply options
+			setTimeout(function() {
+				$element.find('.jsm-quick-replies').animate({
+					height: 0
+				}, function() {
+					that.options.state.quickRepliesDisplayed = false;
+					$(this).addClass('jsm-hide').css('height', null);
+				});
+			}, 500 + 100 + 100);
+		} else {
+			this.options.script.push({
+				method: 'selectQuickReply',
+				args: [ quickReplyIndex, this._clearOptions(options) ],
+				delay: options.delay
 			});
 		}
 		return this;
@@ -247,7 +361,7 @@
 				setTimeout(function() {
 					Plugin.prototype[item.method].apply(that, item.args);
 					schedule(index + 1);
-				}, that.options.script[index].offset);
+				}, item.delay);
 			}
 		};
 		schedule(0);
@@ -259,6 +373,7 @@
 		$(this.element).find('.jsm-input-message').addClass('jsm-hide');
 		$(this.element).find('.jsm-chat-content')[0].scrollTop = 0;
 		this.options.state.welcomeMessageDisplayed = true;
+		this.options.state.quickRepliesDisplayed = false;
 	}
 
 	$.fn.fbMessenger = function(options) {

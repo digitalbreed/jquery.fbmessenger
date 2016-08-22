@@ -21,6 +21,9 @@ $jsm-dark-gray: #8b858c;
 .jsm-hide {
 	display: none;
 }
+.jsm-invisible {
+	visibility: hidden;
+}
 
 /**
 	Wrapper for all phone screen content
@@ -130,15 +133,49 @@ $jsm-dark-gray: #8b858c;
 	}
 }
 
-.jsm-input-bar {
-	flex: 1;
+.jsm-bottom-bar {
 	width: 100%;
-	min-height: 6.7%;
-	border-top: 1px solid #b2b2b2;
 	background: #fff;
 	z-index: 10;
 
+	/**
+		Contains the quick reply options.
+	*/
+	.jsm-quick-replies {
+		height: 4.25em;
+		overflow: hidden;
+		margin-top: 0.5em;
+
+		.jsm-quick-replies-container {
+			white-space: nowrap;
+			padding: 0 0.5em;
+
+			.jsm-quick-reply-option {
+				padding: 0.6em 1em;
+				border-radius: 1.5em;
+				border: 1px solid $jsm-blue;
+				background: #fff;
+				font-size: 130%;
+				display: inline-block;
+				margin-right: 0.5em;
+				color: $jsm-blue;
+				transition: transform 0.25s ease-in-out;
+				transform: translateY(3.5em);
+
+				&.show {
+					transform: translateY(0);
+				}
+
+				&.selected {
+					background: $jsm-blue;
+					color: #fff;
+				}
+			}
+		}
+	}
+
 	.jsm-get-started-button, .jsm-input-message {
+		border-top: 1px solid #b2b2b2;
 		font-size: 150%;
 		color: $jsm-blue;
 		text-align: center;
@@ -159,12 +196,15 @@ $jsm-dark-gray: #8b858c;
 }
 
 .jsm-chat-content {
-	width: 100%;
+	width: calc(100% + 16px);
 	height: 100%;
 	background: #fff;
 	margin: 0;
 	padding: 0;
-	overflow: auto;
+	overflow-y: scroll;
+	overflow-x: none;
+	position: relative;
+	flex: 1;
 
 	/**
 		Displayed before the Get Started button is pressed.
@@ -176,6 +216,7 @@ $jsm-dark-gray: #8b858c;
 		color: $jsm-light-gray;
 		font-size: 120%;
 		padding: 0 2.1%;
+		margin-right: 16px;
 	}
 
 	/**
@@ -261,11 +302,13 @@ $jsm-dark-gray: #8b858c;
 	*/
 	.jsm-chat-message {
 		display: table;
-		padding: 0.75em 1em;
+		padding: 0.6em 1em;
 		border-radius: 1.5em;
 		margin-bottom: 0.15em;
 		font-size: 130%;
 		max-width: 75%;
+		transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
+		transform: translateY(0);
 
 		&.left {
 			float: left;
@@ -291,6 +334,11 @@ $jsm-dark-gray: #8b858c;
 			&.has-next {
 				border-bottom-right-radius: 0.25em;
 			}
+		}
+
+		&.quickreply {
+			opacity: 0;
+			transform: translateY(1em);
 		}
 	}
 
