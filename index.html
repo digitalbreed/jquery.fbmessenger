@@ -1,0 +1,101 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>jQuery.FbMessenger demo</title>
+
+		<style>
+			body, html {
+				margin: 0;
+				padding: 0;
+				background: #fff;
+			}
+			div.vcenter {
+				margin: 5vh auto 0;
+				height: 90vh;
+				width: 100%;
+				text-align: center;
+			}
+			div.iphone-wrapper {
+				display: inline-block;
+				width: auto;
+				height: 100%;
+				position: relative;
+			}
+			div.iphone-wrapper img {
+				height: 100%;
+				width: auto;
+			}
+			div.screen-content {
+				position: absolute;
+				top: 10.88%;
+				bottom: 20%;
+				left: 14.65%;
+				right: 16.8%;
+				background: #000;
+				border-radius: 3px;
+				overflow: hidden;
+			}
+			div.github-buttons {
+				text-align: center;
+			}
+			div.github-buttons iframe {
+				margin-right: 2em;
+			}
+		</style>
+
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		<script src="https://rawgit.com/digitalbreed/jquery.fbmessenger/develop/dist/jquery.fbmessenger.min.js"></script>
+		<link rel="stylesheet" href="https://rawgit.com/digitalbreed/jquery.fbmessenger/develop/dist/jquery.fbmessenger.css">
+
+		<script async defer src="https://buttons.github.io/buttons.js"></script>
+	</head>
+	<body>
+		<div class="vcenter">
+			<div class="iphone-wrapper">
+				<img alt="iPhone 6 white" src="https://i.imgsafe.org/a2ba6b06b3.png" />
+				<div class="screen-content">
+				</div>
+			</div>
+		</div>
+		<div class="github-buttons">
+			<a class="github-button" href="https://github.com/digitalbreed/jquery.fbmessenger" data-icon="octicon-eye" data-count-href="/digitalbreed/jquery.fbmessenger/watchers" data-count-api="/repos/digitalbreed/jquery.fbmessenger#subscribers_count" data-count-aria-label="# watchers on GitHub" aria-label="Watch digitalbreed/jquery.fbmessenger on GitHub">Watch</a>
+			<a class="github-button" href="https://github.com/digitalbreed/jquery.fbmessenger" data-icon="octicon-star" data-count-href="/digitalbreed/jquery.fbmessenger/stargazers" data-count-api="/repos/digitalbreed/jquery.fbmessenger#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star digitalbreed/jquery.fbmessenger on GitHub">Star</a>
+			<a class="github-button" href="https://github.com/digitalbreed/jquery.fbmessenger/issues" data-icon="octicon-issue-opened" data-count-api="/repos/digitalbreed/jquery.fbmessenger#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue digitalbreed/jquery.fbmessenger on GitHub">Issue</a>
+			<a class="github-button" href="https://github.com/digitalbreed/jquery.fbmessenger/archive/master.zip" data-icon="octicon-cloud-download" aria-label="Download digitalbreed/jquery.fbmessenger on GitHub">Download</a>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				var now = new Date();
+				$('.screen-content').fbMessenger()
+					.fbMessenger('start', { delay: 2000 } )
+					.fbMessenger('message', 'user', 'Get Started', { timestamp: now, delay: 250 })
+					.fbMessenger('typingIndicator', { delay: 500 })
+					.fbMessenger('message', 'bot', 'Hey there! I am the jQuery.fbMessenger demo.', { timestamp: now, delay: 3000 })
+					.fbMessenger('typingIndicator', { delay: 1000 })
+					.fbMessenger('message', 'bot', 'You can use me to create short demos of a Messenger interaction.', { timestamp: now, delay: 4000 })
+					.fbMessenger('message', 'user', 'Wow, sounds awesome!', { timestamp: now, delay: 4000 })
+					.fbMessenger('typingIndicator', { delay: 1000 })
+					.fbMessenger('message', 'bot', 'It is!', { timestamp: now, delay: 1000 })
+					.fbMessenger('typingIndicator', { delay: 500 })
+					.fbMessenger('message', 'bot', 'You can build quick demos of your user journey without having to record your actual bot.', { timestamp: now, delay: 3000 })
+					.fbMessenger('typingIndicator', { delay: 250 })
+					.fbMessenger('message', 'bot', 'Or gracefully degrade to this if the browser can\'t play a video.', { timestamp: now, delay: 2000 })
+					.fbMessenger('typingIndicator', { delay: 250 })
+					.fbMessenger('message', 'bot', 'E.g. on slow mobile connections.', { timestamp: now, delay: 1000 })
+					.fbMessenger('message', 'user', 'I totally need this!', { timestamp: now, delay: 4000 })
+					.fbMessenger('message', 'user', 'One more thing. Do you support quick replies already?', { timestamp: now, delay: 3000 })
+					.fbMessenger('typingIndicator', { delay: 1000 })
+					.fbMessenger('message', 'bot', 'Of course! How do you like it?', { timestamp: now, delay: 2000 })
+					.fbMessenger('showQuickReplies', [ 'Awesome!', 'Works for me', 'Needs some improvement', '#Fail' ], { delay: 2000 })
+					.fbMessenger('scrollQuickReplies', 3, { delay: 2000 })
+					.fbMessenger('scrollQuickReplies', 0, { delay: 1000 })
+					.fbMessenger('selectQuickReply', 0, { delay: 1000 })
+					.fbMessenger('message', 'user', 'One more time!', { timestamp: now, delay: 3000 })
+					.fbMessenger('run');
+			});
+		</script>
+	</body>
+</html>
