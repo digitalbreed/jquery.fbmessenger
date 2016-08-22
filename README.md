@@ -1,6 +1,8 @@
 # jQuery.fbMessenger
 
-*A jQuery plugin to easily visualize fake Facebook Messenger interactions with an iPhone theme. Ideal for your bot landing page.*
+*A jQuery plugin to easily visualize fake Facebook Messenger interactions, with an iPhone theme. Ideal for your bot landing page.*
+
+[Click here to see it in action.](https://digitalbreed.github.io/jquery.fbmessenger/)
 
 ![Interaction produced by jQuery.fbMessenger](https://github.com/digitalbreed/jquery.fbmessenger/raw/develop/demo/jquery.fbmessenger.gif)
 
