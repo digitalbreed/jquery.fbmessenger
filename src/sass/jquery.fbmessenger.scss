@@ -2,6 +2,8 @@ $jsm-blue: #007aff;
 $jsm-light-gray: #959595;
 $jsm-dark-gray: #8b858c;
 
+$message-bubble-padding: 0.6em 1em;
+
 /**
 	Clearfix mixin
 */
@@ -196,11 +198,11 @@ $jsm-dark-gray: #8b858c;
 }
 
 .jsm-chat-content {
-	width: calc(100% + 16px);
+	width: 100%;
 	height: 100%;
 	background: #fff;
 	margin: 0;
-	padding: 0;
+	padding: 0 16px 0 0;
 	overflow-y: scroll;
 	overflow-x: none;
 	position: relative;
@@ -312,7 +314,7 @@ $jsm-dark-gray: #8b858c;
 	*/
 	.jsm-chat-message {
 		display: table;
-		padding: 0.6em 1em;
+		padding: $message-bubble-padding;
 		border-radius: 1.5em;
 		margin-bottom: 0.15em;
 		font-size: 130%;
@@ -352,6 +354,9 @@ $jsm-dark-gray: #8b858c;
 		}
 	}
 
+	/**
+		Additional message bubble class for the left user's typing indicator.
+	*/
 	.jsm-typing-indicator {
 		span {
 			background: $jsm-dark-gray;
@@ -371,6 +376,31 @@ $jsm-dark-gray: #8b858c;
 		span:nth-child(3) {
 			animation-delay: 0.3s;
 			margin-right: 0;
+		}
+	}
+
+	/**
+		Additional message bubble class for button templates and the contained title and buttons.
+	*/
+	.jsm-button-template {
+		padding: 0;
+		.header {
+			padding: $message-bubble-padding;
+		}
+		.button {
+			margin: 1px;
+			padding: 0.8em 1em;
+			background: #fff;
+			color: $jsm-blue;
+			text-align: center;
+			overflow: hidden;
+			&.selected {
+				color: $jsm-light-gray;
+			}
+			&:last-child {
+				border-bottom-left-radius: 1.45em;
+				border-bottom-right-radius: 1.45em;
+			}
 		}
 	}
 }

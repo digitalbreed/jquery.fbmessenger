@@ -2,7 +2,7 @@
  * jQuery.fbMessenger
  * Simulates interaction with a Facebook Messenger bot on an iPhone
  *
- * Version: 0.0.1
+ * Version: 0.0.3
  * Author: Matthias Gall <matthias.gall@digitalbreed.com>
  * Copyright (c) by Matthias Gall 2016, all rights reserved.
  *
@@ -37,7 +37,6 @@
 		state: {
 			welcomeMessageDisplayed: true,
 			lastTimestamp: null,
-			lastMessageBy: null,
 			quickRepliesDisplayed: false
 		}
 	};
@@ -231,7 +230,7 @@
 			this._checkWelcomeMessage();
 			this._checkUser(user);
 			var sideClass = user === this.options.leftUser ? 'left' : user === this.options.rightUser ? 'right' : '';
-			this._addNewContent(user, $('<div class="jsm-chat-message ' + sideClass + ' ' + options.className + '">' + text + '</div>'), options.timestamp);
+			this._addNewContent(user, $('<div class="jsm-chat-message ' + sideClass + ' ' + (options.className || '') + '">' + text + '</div>'), options.timestamp);
 		} else {
 			this.options.script.push({
 				method: 'message',
@@ -350,6 +349,43 @@
 			});
 		}
 		return this;
+	}
+
+	Plugin.prototype.showButtonTemplate = function(text, buttons, options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkQuickReply(false);
+			var template = '<div class="jsm-chat-message left jsm-button-template"><div class="header">' + text + '</div>';
+			$.each(buttons, function(index, button) {
+				template += '<div class="button">' + button + '</div>';
+			});
+			template += '</div>';
+			this._addNewContent(this.options.leftUser, $(template), options.timestamp);
+		} else {
+			this.options.script.push({
+				method: 'showButtonTemplate',
+				args: [ text, buttons, this._clearOptions(options) ],
+				delay: options.delay
+			});
+		}
+	}
+
+	Plugin.prototype.selectButtonTemplate = function(buttonIndex, options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkQuickReply(false);
+			var $button = this.$element.find('.jsm-chat-content .jsm-button-template:last .button:nth-child(' + (buttonIndex + 1) + ')').addClass('selected');
+			setTimeout(function() {
+				$button.removeClass('selected');
+			}, 1500);
+			this.message(this.options.rightUser, $button.text(), { timestamp: false });
+		} else {
+			this.options.script.push({
+				method: 'selectButtonTemplate',
+				args: [ buttonIndex, this._clearOptions(options) ],
+				delay: options.delay
+			})
+		}
 	}
 
 	Plugin.prototype.run = function() {
