@@ -63,9 +63,11 @@ Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your 
 | ------ | -----------
 | `('start', options)` | Replaces the welcome screen with the actual chat in order to send messages, similarly as if the user touches the "Get Started" button.
 | `('message', user, text, options)` | Creates a new message sent by user with symbolic name `user` with text `text` and (optional) timestamp `options.timestamp` (must be type `Date`).
+| `('typingIndicator', options)` | Enables the typing indicator for the left user. It remains turned on until a new message is sent by the left user.
 | `('showQuickReplies', quickReplies, options)` | Moves the quick reply options into view, where `quickReplies` is an array of strings.
 | `('selectQuickReply', quickReplyIndex, options)` | Selects the quick reply with index `quickReplyIndex`.
-| `('typingIndicator', options)` | Enables the typing indicator for the left user. It remains turned on until a new message is sent by the left user.
+| `('showButtonTemplate', text, buttons, options)` | Shows a button template with the given buttons, where `buttons` is an array of strings.
+| `('selectButtonTemplate', buttonIndex, options)` | Selects the button with index `buttonIndex`.
 | `('run')` | Executes the previously scheduled steps.
 
 The `options` parameter is optional and may contain an attribute `delay`. If `delay` is provided, execution is halted until `run` is called and every step is delayed `delay` milliseconds to the previous step. If it's not provided, the corresponding action is executed immediately.
@@ -95,7 +97,7 @@ I plan to work on these items very soon. If you need one of those to put jQuery.
 
 * Message sent/received/ last read indicator
 * Generic template support
-* Button template support
+* ~~Button template support~~ (available since v0.0.3 2016-08-23)
 * ~~Quick replies~~ (available since v0.0.2 2016-08-22)
 * Resize support
 * Style updates
