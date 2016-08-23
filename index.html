@@ -80,11 +80,7 @@
 					.fbMessenger('typingIndicator', { delay: 1000 })
 					.fbMessenger('message', 'bot', 'It is!', { timestamp: now, delay: 1000 })
 					.fbMessenger('typingIndicator', { delay: 500 })
-					.fbMessenger('message', 'bot', 'You can build quick demos of your user journey without having to record your actual bot.', { timestamp: now, delay: 3000 })
-					.fbMessenger('typingIndicator', { delay: 250 })
-					.fbMessenger('message', 'bot', 'Or gracefully degrade to this if the browser can\'t play a video.', { timestamp: now, delay: 2000 })
-					.fbMessenger('typingIndicator', { delay: 250 })
-					.fbMessenger('message', 'bot', 'E.g. on slow mobile connections.', { timestamp: now, delay: 1000 })
+					.fbMessenger('message', 'bot', 'You can quickly prototype user journeys, or gracefully degrade if the browser can\'t play a video.', { timestamp: now, delay: 3000 })
 					.fbMessenger('message', 'user', 'I totally need this!', { timestamp: now, delay: 4000 })
 					.fbMessenger('message', 'user', 'One more thing. Do you support quick replies already?', { timestamp: now, delay: 3000 })
 					.fbMessenger('typingIndicator', { delay: 1000 })
@@ -93,8 +89,14 @@
 					.fbMessenger('scrollQuickReplies', 3, { delay: 2000 })
 					.fbMessenger('scrollQuickReplies', 0, { delay: 1000 })
 					.fbMessenger('selectQuickReply', 0, { delay: 1000 })
-					.fbMessenger('message', 'user', 'One more time!', { timestamp: now, delay: 3000 })
+					.fbMessenger('message', 'user', 'And what about button templates?', { timestamp: now, delay: 2000 })
+					.fbMessenger('typingIndicator', { delay: 1000 })
+					.fbMessenger('showButtonTemplate', 'Got you covered. Like?', ['Hell yeah', 'Meh'], { timestamp: now, delay: 500})
+					.fbMessenger('selectButtonTemplate', 1, { delay: 2000 })
+					.fbMessenger('message', 'bot', 'I knew you\'d like it!', { timestamp: now, delay: 2000 })
+					.fbMessenger('message', 'user', 'One more time!', { timestamp: now, delay: 5000 })
 					.fbMessenger('run');
+
 			});
 		</script>
 
