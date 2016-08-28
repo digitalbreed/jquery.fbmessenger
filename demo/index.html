@@ -55,7 +55,7 @@
 		<script type="text/javascript">
 			$(function() {
 				var now = new Date();
-				$('.screen-content').fbMessenger({ loop: false })
+				$('.screen-content').fbMessenger()
 					.fbMessenger('start', { delay: 2000 } )
 					.fbMessenger('message', 'user', 'Get Started', { timestamp: now, delay: 250 })
 					.fbMessenger('typingIndicator', { delay: 500 })
