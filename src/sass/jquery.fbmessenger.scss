@@ -41,6 +41,7 @@ $message-bubble-padding: 0.6em 1em;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
+	background: #fff;
 }
 
 /**
@@ -54,7 +55,7 @@ $message-bubble-padding: 0.6em 1em;
 	height: 9%;
 	background: #f9f9f9;
 	border-bottom: 1px solid #b2b2b2;
-	z-index: 10;
+	z-index: 20;
 
 	.jsm-status-bar {
 		width: 100%;
@@ -139,6 +140,7 @@ $message-bubble-padding: 0.6em 1em;
 	width: 100%;
 	background: #fff;
 	z-index: 10;
+	margin-top: 0.5em;
 
 	/**
 		Contains the quick reply options.
@@ -146,7 +148,6 @@ $message-bubble-padding: 0.6em 1em;
 	.jsm-quick-replies {
 		height: 4.25em;
 		overflow: hidden;
-		margin-top: 0.5em;
 
 		.jsm-quick-replies-container {
 			white-space: nowrap;
@@ -201,10 +202,7 @@ $message-bubble-padding: 0.6em 1em;
 	width: 100%;
 	height: 100%;
 	background: #fff;
-	margin: 0;
-	padding: 0 16px 0 0;
-	overflow-y: scroll;
-	overflow-x: none;
+	overflow: hidden;
 	position: relative;
 	flex: 1;
 
@@ -217,8 +215,7 @@ $message-bubble-padding: 0.6em 1em;
 		text-align: center;
 		color: $jsm-light-gray;
 		font-size: 120%;
-		padding: 0 2.1%;
-		margin-right: 16px;
+		padding: 0 0.5em;
 	}
 
 	/**
@@ -313,7 +310,6 @@ $message-bubble-padding: 0.6em 1em;
 		Standard message bubbles.
 	*/
 	.jsm-chat-message {
-		display: table;
 		padding: $message-bubble-padding;
 		border-radius: 1.5em;
 		margin-bottom: 0.15em;
@@ -321,10 +317,13 @@ $message-bubble-padding: 0.6em 1em;
 		max-width: 75%;
 		transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
 		transform: translateY(0);
+		position: relative;
+		z-index: 10;
 
 		&.left {
 			float: left;
 			background: #f1f0f0;
+			border: 1px solid #f1f0f0;
 			margin-left: 3em;
 
 			&.has-previous {
@@ -337,6 +336,7 @@ $message-bubble-padding: 0.6em 1em;
 		&.right {
 			float: right;
 			background: $jsm-blue;
+			border: 1px solid $jsm-blue;
 			color: #fff;
 			margin-right: 5%;
 
@@ -383,24 +383,135 @@ $message-bubble-padding: 0.6em 1em;
 		Additional message bubble class for button templates and the contained title and buttons.
 	*/
 	.jsm-button-template {
+		margin-bottom: 0.5em;
 		padding: 0;
+		width: calc(100% - 6em);
 		.header {
 			padding: $message-bubble-padding;
 		}
+		.button:last-child {
+			border-bottom-left-radius: 1.45em;
+			border-bottom-right-radius: 1.45em;
+			border-bottom: none;
+		}
+	}
+
+	/**
+		Additional message bubble class for generic templates and the contained items.
+	*/
+	.jsm-generic-template-wrapper {
+		border-radius: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		padding: 0 0.5em 0 3em;
+
+		&.jsm-chat-message.left {
+			background: none;
+			border: none;
+			margin-left: 0;
+			max-width: 100%;
+			float: none;
+		}
+
+		/**
+			The template is wrapped into a white background layer that will cover the user icon when the template is scrolled horizontally.
+		*/
+		.jsm-generic-template-background {
+			border-radius: 1.5em;
+			background-color: #fff;
+			display: inline-block;
+
+			.jsm-generic-template {
+				border: 1px solid #f1f0f0;
+				background: #fff;
+				border-radius: 0.25em;
+				display: inline-block;
+				margin-right: 0.5em;
+
+				.image {
+					background-size: cover;
+					box-sizing: border-box;
+					padding-top: 52%;
+					border-top-left-radius: 0.2em;
+					border-top-right-radius: 0.2em;
+					border-bottom: 1px solid #f1f0f0;
+				}
+
+				.title {
+					font-family: Arial, sans-serif;
+					border-bottom: 1px solid #f1f0f0;
+					padding: $message-bubble-padding;
+					white-space: normal;
+
+					p:first-child {
+						font-size: 100%;
+						font-weight: bold;
+						margin: 0 0 0.5em;
+					}
+					p:last-child {
+						color: $jsm-dark-gray;
+						font-size: 90%;
+						margin: 0;
+					}
+				}
+
+				.button:last-child {
+					border-bottom-left-radius: 0.2em;
+					border-bottom-right-radius: 0.2em;
+					border-bottom: none;
+				}
+
+				&:first-child {
+					border-top-left-radius: 1.5em;
+					border-bottom-left-radius: 1.5em;
+
+					.image {
+						border-top-left-radius: 1.55em;
+					}
+
+					.button:last-child {
+						border-bottom-left-radius: 1.45em;
+						border-bottom-right-radius: 1.45em;
+						border-bottom: none;
+					}
+				}
+				&:last-child {
+					border-top-right-radius: 1.5em;
+					border-bottom-right-radius: 1.5em;
+
+					.image {
+						border-top-right-radius: 1.55em;
+					}
+
+					.button:last-child {
+						border-bottom-left-radius: 1.45em;
+						border-bottom-right-radius: 1.45em;
+						border-bottom: none;
+					}
+				}
+
+			}
+		}
+	}
+
+	.jsm-button-template, .jsm-generic-template-wrapper {
 		.button {
-			margin: 1px;
+			margin: 0;
 			padding: 0.8em 1em;
 			background: #fff;
 			color: $jsm-blue;
 			text-align: center;
 			overflow: hidden;
+			border-bottom: 1px solid #f1f0f0;
 			&.selected {
 				color: $jsm-light-gray;
 			}
-			&:last-child {
-				border-bottom-left-radius: 1.45em;
-				border-bottom-right-radius: 1.45em;
-			}
+		}
+		&.has-previous .button:last-child {
+			border-top-left-radius: 0.25em;
+		}
+		&.has-next .button:last-child {
+			border-bottom-left-radius: 0.25em;
 		}
 	}
 }

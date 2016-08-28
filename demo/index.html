@@ -55,7 +55,7 @@
 		<script type="text/javascript">
 			$(function() {
 				var now = new Date();
-				$('.screen-content').fbMessenger()
+				$('.screen-content').fbMessenger({ loop: false })
 					.fbMessenger('start', { delay: 2000 } )
 					.fbMessenger('message', 'user', 'Get Started', { timestamp: now, delay: 250 })
 					.fbMessenger('typingIndicator', { delay: 500 })
@@ -65,22 +65,55 @@
 					.fbMessenger('message', 'user', 'Wow, sounds awesome!', { timestamp: now, delay: 4000 })
 					.fbMessenger('typingIndicator', { delay: 1000 })
 					.fbMessenger('message', 'bot', 'It is!', { timestamp: now, delay: 1000 })
-					.fbMessenger('typingIndicator', { delay: 500 })
-					.fbMessenger('message', 'bot', 'You can quickly prototype user journeys, or gracefully degrade if the browser can\'t play a video.', { timestamp: now, delay: 3000 })
-					.fbMessenger('message', 'user', 'I totally need this!', { timestamp: now, delay: 4000 })
-					.fbMessenger('message', 'user', 'One more thing. Do you support quick replies already?', { timestamp: now, delay: 3000 })
+					.fbMessenger('message', 'user', 'Do you support quick replies already?', { timestamp: now, delay: 2000 })
 					.fbMessenger('typingIndicator', { delay: 1000 })
 					.fbMessenger('message', 'bot', 'Of course! How do you like it?', { timestamp: now, delay: 2000 })
-					.fbMessenger('showQuickReplies', [ 'Awesome!', 'Works for me', 'Needs some improvement', '#Fail' ], { delay: 2000 })
+					.fbMessenger('showQuickReplies', [ 'Awesome!', 'Works for me', 'Needs some improvement', '#Fail' ], { delay: 0 })
 					.fbMessenger('scrollQuickReplies', 3, { delay: 2000 })
 					.fbMessenger('scrollQuickReplies', 0, { delay: 1000 })
 					.fbMessenger('selectQuickReply', 0, { delay: 1000 })
 					.fbMessenger('message', 'user', 'And what about button templates?', { timestamp: now, delay: 2000 })
 					.fbMessenger('typingIndicator', { delay: 1000 })
-					.fbMessenger('showButtonTemplate', 'Got you covered. Like?', ['Hell yeah', 'Meh'], { timestamp: now, delay: 500})
+					.fbMessenger('showButtonTemplate', 'Got you covered. Like?', ['Hell yeah', 'Meh'], { timestamp: now, delay: 1000})
 					.fbMessenger('selectButtonTemplate', 1, { delay: 2000 })
-					.fbMessenger('message', 'bot', 'I knew you\'d like it!', { timestamp: now, delay: 2000 })
-					.fbMessenger('message', 'user', 'One more time!', { timestamp: now, delay: 5000 })
+					.fbMessenger('typingIndicator', { delay: 500 })
+					.fbMessenger('message', 'bot', 'I knew you\'d like it!', { timestamp: now, delay: 1000 })
+					.fbMessenger('typingIndicator', { delay: 500 })
+					.fbMessenger('message', 'bot', 'While we\'re at it, let me show you how I do generic templates:', { timestamp: now, delay: 3000 })
+					.fbMessenger('typingIndicator', { delay: 500 })
+					.fbMessenger('showGenericTemplate', [
+						{
+							imageUrl: 'holidays1.jpg',
+							title: 'Majorca',
+							subtitle: 'First holidays with kids at playa Sa Coma (June 2016)',
+							buttons: [
+								'Button 1',
+								'Button 2'
+							]
+						},
+						{
+							imageUrl: 'holidays2.jpg',
+							title: 'Paris',
+							subtitle: ' Sacré-Cœur de Montmartre in beautiful afternoon sunlight (April 2016)',
+							buttons: [
+								'Button 1',
+								'Button 2'
+							]
+						},
+						{
+							imageUrl: 'holidays3.jpg',
+							title: 'Barcelona',
+							subtitle: 'Panorama of Barcelona from the Temple Expiatori del Sagrat Cor on Tibidabo (June 2015)',
+							buttons: [
+								'Button 1',
+								'Button 2'
+							]
+						}
+					], { timestamp: now, delay: 2000 })
+					.fbMessenger('scrollGenericTemplate', 1, { delay: 1000 })
+					.fbMessenger('scrollGenericTemplate', 2, { delay: 1000 })
+					.fbMessenger('scrollGenericTemplate', 0, { delay: 1000 })
+					//.fbMessenger('message', 'user', 'One more time!', { timestamp: now, delay: 5000 })
 					.fbMessenger('run');
 			});
 		</script>

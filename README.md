@@ -37,11 +37,11 @@ Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your 
         .fbMessenger({
           // options go here
         })
-        // Schedule some interaction
+        // Schedule some interaction:
         .fbMessenger('start', { delay: 1000 })
         .fbMessenger('message', 'user', 'Get Started', { delay: 250 })
         .fbMessenger('typingIndicator', { delay: 250 })
-        .fbMessenger('message', 'bot', 'Hello my friend, I am a small jQuery plugin! I hope you like it.', { delay: 1500 })
+        .fbMessenger('message', 'bot', 'Hello my friend, I am a jQuery plugin to fake Messenger interactions! I hope you like it.', { delay: 1500 })
         .fbMessenger('typingIndicator', { delay: 0 })
         .fbMessenger('message', 'bot', 'If you find my services useful, please star me on GitHub!', { delay: 1500 })
         .fbMessenger('message', 'user', 'Hi, nice to meet you! I definitely will do!', { delay: 2000 })
@@ -49,6 +49,29 @@ Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your 
         .fbMessenger('message', 'bot', 'Really?', { delay: 1000 })
         .fbMessenger('showQuickReplies', [ 'Yes!', 'Maybe...', 'Nope, just wanted to be polite' ], { delay: 2000 })
         .fbMessenger('selectQuickReply', 0, { delay: 1000 })
+        .fbMessenger('showButtonTemplate', 'Do you use button templates?', [ 'Yes', 'No' ], { delay: 1500 })
+        .fbMessenger('selectButtonTemplate', 0, { delay: 2000 })
+        .fbMessenger('showGenericTemplate', [
+          {
+            imageUrl: '/your-first-image.png',
+            title: 'This is the first option.',
+            subtitle: 'You can have a subtitle if you like.',
+            buttons: [
+              'Button 1',
+              'Button 2'
+            ]
+          },
+          {
+            imageUrl: '/your-second-image.png',
+            title: 'This is your second option. Subtitle is optional!',
+            buttons: [
+              'Button 3',
+              'Button 4'
+            ];
+          }
+        ], { delay: 2000 })
+        .fbMessenger('scrollGenericTemplate', 1, { delay: 1000 })
+        .fbMessenger('selectGenericTemplate', 0, { delay: 1000 })
         // And trigger the execution
         .fbMessenger('run');
       });
@@ -68,6 +91,9 @@ Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your 
 | `('selectQuickReply', quickReplyIndex, options)` | Selects the quick reply with index `quickReplyIndex`.
 | `('showButtonTemplate', text, buttons, options)` | Shows a button template with the given buttons, where `buttons` is an array of strings.
 | `('selectButtonTemplate', buttonIndex, options)` | Selects the button with index `buttonIndex`.
+| `('showGenericTemplate', templates, options)` | Shows a generic template with the given items, where `templates` is an array of objects `{ imageUrl: '...', title: '...', subtitle: '...', buttons: [ ... ] }` (see usage example).
+| `('scrollGenericTemplate', templateIndex, options)` | Scrolls the generic template item with the given index into view.
+| `('selectGenericTemplate', buttonIndex, options)` | Selects the button with the given `buttonIndex` on the generic template item which is currently in view.
 | `('run')` | Executes the previously scheduled steps.
 
 The `options` parameter is optional and may contain an attribute `delay`. If `delay` is provided, execution is halted until `run` is called and every step is delayed `delay` milliseconds to the previous step. If it's not provided, the corresponding action is executed immediately.

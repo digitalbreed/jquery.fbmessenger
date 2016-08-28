@@ -2,7 +2,7 @@
  * jQuery.fbMessenger
  * Simulates interaction with a Facebook Messenger bot on an iPhone
  *
- * Version: 0.0.3
+ * Version: 0.0.4
  * Author: Matthias Gall <matthias.gall@digitalbreed.com>
  * Copyright (c) by Matthias Gall 2016, all rights reserved.
  *
@@ -202,14 +202,16 @@
 		// If the icon needs to be maintained, position it correctly or animate it down to the newest message
 		if ($icon) {
 			var fontSize = parseInt($(this.element).css('font-size'));
-			var top = $user.height() - 3.5 * fontSize; // 3.5 = image size 3 + 0.5 margin bottom
-			if (newWrapper) {
-				$icon.css('top', top + 'px');
-			} else {
-				$icon.animate({
-					top: top
-				}, 250);
-			}
+			setTimeout(function() {
+				var top = $user.height() - 3.5 * fontSize; // 3.5 = image size 3 + 0.5 margin bottom
+				if (newWrapper) {
+					$icon.css('top', top + 'px');
+				} else {
+					$icon.animate({
+						top: top
+					}, 250);
+				}
+			}, 1);
 		}
 		// Setup corners
 		var $messages = $user.find('.jsm-chat-message');
@@ -384,7 +386,79 @@
 				method: 'selectButtonTemplate',
 				args: [ buttonIndex, this._clearOptions(options) ],
 				delay: options.delay
+			});
+		}
+	}
+
+	Plugin.prototype.showGenericTemplate = function(items, options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkQuickReply(false);
+			var template = '<div class="jsm-chat-message left jsm-generic-template-wrapper"><div class="jsm-generic-template-background">';
+			$.each(items, function(index, item) {
+				template += '<div class="jsm-generic-template ' + (index === 0 ? 'selected' : '') + '">';
+				if (item.imageUrl) {
+					template += '<div class="image" style="background-image: url(\'' + item.imageUrl + '\');"></div>';
+				}
+				template += '<div class="title"><p>' + item.title + '</p><p>' + item.subtitle + '</p></div>';
+				$.each(item.buttons, function(index2, button) {
+					template += '<div class="button">' + button + '</div>';
+				});
+				template += '</div>';
+			});
+			template += '</div></div>';
+			this._addNewContent(this.options.leftUser, $(template), options.timestamp);
+			var $templates = this.$element.find('.jsm-generic-template-wrapper:last .jsm-generic-template');
+			// Adjust width of items
+			var width = this.$element.width();
+			$templates.css('width', 'calc(' + width + 'px - 6em - 4px)'); // FIXME extract margins (3em left / 3em right) and visible border sizes (4x 1px) from elements
+			// Adjust height of titles
+			var $titles = $templates.find('.title');
+			$titles.css('height', Math.max.apply(Math, $titles.map(function() { return $(this).height(); })) + 'px');
+		} else {
+			this.options.script.push({
+				method: 'showGenericTemplate',
+				args: [ items, this._clearOptions(options) ],
+				delay: options.delay
+			});
+		}
+	}
+
+	Plugin.prototype.scrollGenericTemplate = function(itemIndex, options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkQuickReply(false);
+			var $scroller = this.$element.find('.jsm-generic-template-wrapper:last');
+			var width = $scroller.find('.jsm-generic-template:first').outerWidth(true) + 2;
+			$scroller.find('.jsm-generic-template').removeClass('selected');
+			$scroller.find('.jsm-generic-template:nth-child(' + (itemIndex + 1) + ')').addClass('selected');
+			$scroller.animate({
+				scrollLeft: itemIndex * width
+			}, 500);
+		} else {
+			this.options.script.push({
+				method: 'scrollGenericTemplate',
+				args: [ itemIndex ],
+				delay: options.delay
 			})
+		}
+	}
+
+	Plugin.prototype.selectGenericTemplate = function(buttonIndex, options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkQuickReply(false);
+			var $button = this.$element.find('.jsm-generic-template-wrapper:last .jsm-generic-template.selected .button:eq(' + buttonIndex + ')').addClass('selected');
+			setTimeout(function() {
+				$button.removeClass('selected');
+			}, 1500);
+			this.message(this.options.rightUser, $button.text(), { timestamp: false });
+		} else {
+			this.options.script.push({
+				method: 'selectGenericTemplate',
+				args: [ buttonIndex, this._clearOptions(options) ],
+				delay: options.delay
+			});
 		}
 	}
 
