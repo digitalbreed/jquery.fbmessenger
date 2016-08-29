@@ -28,6 +28,14 @@ $message-bubble-padding: 0.6em 1em;
 }
 
 /**
+	Helper to force redraw of the main element
+*/
+
+.jsm-force-redraw::before {
+	content: ""
+}
+
+/**
 	Wrapper for all phone screen content
 */
 .jsm-iphone-content {
