@@ -112,11 +112,9 @@
 			this.$element.find('.jsm-chat-content').addClass('ios');
 		}
 
-		// Safari doesn't provide width immediately, but height
-		// TODO recalculate on resize
-		var width = this.$element.height() * 0.5622;
-		var fontSize = Math.floor(width / 750 * 24);
-		this.$element.css('font-size', fontSize + 'px');
+		// Bind resize handler and trigger it once
+		$(window).resize(this._handleResize.bind(this));
+		this._handleResize();
 	}
 
 	Plugin.prototype.start = function(options) {
@@ -167,6 +165,36 @@
 		var result = $.extend({}, options);
 		delete result.delay;
 		return result;
+	}
+
+	Plugin.prototype._handleResize = function() {
+		var width = this.$element.width() || this.$element.height() * 0.5622;
+		// Update font size
+		var fontSize = Math.floor(width / 750 * 24);
+		this.$element.css('font-size', fontSize + 'px');
+		// Force redraw
+		this.$element.parent().toggleClass('jsm-force-redraw');
+		// Adjust generic template items
+		var that = this;
+		this.$element.find('.title').css('height', 'auto'); // reset previously set heights
+		setTimeout(function() {
+			// Adjust generic template items
+			var $templates = that.$element.find('.jsm-generic-template');
+			$templates.css('width', 'calc(' + width + 'px - 6em - 4px)');
+			$templates.each(function(index) {
+				var $titles = $(this).find('.title');
+				$titles.css('height', Math.max.apply(Math, $titles.map(function() { return $(this).height(); })) + 'px');
+			});
+			// Adjust user icon positions
+			var $leftUserWrappers = that.$element.find('.jsm-user-wrapper.' + that.options.leftUser);
+			$leftUserWrappers.each(function(index) {
+				var top = $(this).height() - 3.5 * fontSize; // 3.5 = image size 3 + 0.5 margin bottom
+				var $icon = $(this).find('.jsm-user-icon');
+				$icon.css('top', top + 'px');
+			});
+			// Adjust scrolling
+			that._scrollDown();
+		}, 1);
 	}
 
 	Plugin.prototype._addNewContent = function(user, $payload, timestamp) {
