@@ -2,6 +2,10 @@
 
 Please note that all versions prior 1.0.0 are not production ready: the jQuery interface, UI structure and styling may change any time and the whole thing has not yet been tested exhaustively.
 
+## v0.0.5 (2016-08-31)
+
+- window resize support
+
 ## v0.0.4 (2016-08-28)
 
 - Generic template support
