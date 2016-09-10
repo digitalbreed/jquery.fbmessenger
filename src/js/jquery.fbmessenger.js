@@ -2,7 +2,7 @@
  * jQuery.fbMessenger
  * Simulates interaction with a Facebook Messenger bot on an iPhone
  *
- * Version: 0.0.5
+ * Version: 0.0.6
  * Author: Matthias Gall <matthias.gall@digitalbreed.com>
  * Copyright (c) by Matthias Gall 2016, all rights reserved.
  *
@@ -245,10 +245,10 @@
 		var $messages = $user.find('.jsm-chat-message');
 		$messages.each(function(index) {
 			if (index > 0) {
-				$(this).addClass('has-previous');
+				$(this).addClass('jsm-has-previous');
 			}
 			if (index < $messages.length - 1) {
-				$(this).addClass('has-next');
+				$(this).addClass('jsm-has-next');
 			}
 		});
 		// Scroll the entire view down
@@ -259,7 +259,7 @@
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			this._checkUser(user);
-			var sideClass = user === this.options.leftUser ? 'left' : user === this.options.rightUser ? 'right' : '';
+			var sideClass = user === this.options.leftUser ? 'jsm-left' : user === this.options.rightUser ? 'jsm-right' : '';
 			this._addNewContent(user, $('<div class="jsm-chat-message ' + sideClass + ' ' + (options.className || '') + '">' + text + '</div>'), options.timestamp);
 		} else {
 			this.options.script.push({
@@ -274,7 +274,7 @@
 	Plugin.prototype.typingIndicator = function(options) {
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
-			this._addNewContent(this.options.leftUser, $('<div class="jsm-chat-message left jsm-typing-indicator"><span></span><span></span><span></span></div>'), false);
+			this._addNewContent(this.options.leftUser, $('<div class="jsm-chat-message jsm-left jsm-typing-indicator"><span></span><span></span><span></span></div>'), false);
 		} else {
 			this.options.script.push({
 				method: 'typingIndicator',
@@ -301,7 +301,7 @@
 			setTimeout(function() {
 				that._scrollDown();
 				// must be deferred to trigger proper transition
-				$element.find('.jsm-quick-reply-option').addClass('show');
+				$element.find('.jsm-quick-reply-option').addClass('jsm-show');
 			}, 10);
 			this.options.state.quickRepliesDisplayed = true;
 		} else {
@@ -351,14 +351,14 @@
 			this._checkQuickReply(true);
 			var $element = this.$element;
 			var that = this;
-			var $option = $element.find('.jsm-quick-reply-option:nth-child(' + (quickReplyIndex + 1) + ')').addClass('selected');
+			var $option = $element.find('.jsm-quick-reply-option:nth-child(' + (quickReplyIndex + 1) + ')').addClass('jsm-selected');
 			setTimeout(function() {
-				$element.find('.jsm-quick-reply-option').removeClass('show');
+				$element.find('.jsm-quick-reply-option').removeClass('jsm-show');
 				setTimeout(function() {
-					that.message(that.options.rightUser, $option.text(), { timestamp: false, className: 'quickreply' });
+					that.message(that.options.rightUser, $option.text(), { timestamp: false, className: 'jsm-quickreply' });
 					var $message = $element.find('.jsm-chat-message:last');
 					setTimeout(function() {
-						$message.removeClass('quickreply');
+						$message.removeClass('jsm-quickreply');
 					}, 100);
 				}, 100);
 			}, 500);
@@ -385,9 +385,9 @@
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			this._checkQuickReply(false);
-			var template = '<div class="jsm-chat-message left jsm-button-template"><div class="header">' + text + '</div>';
+			var template = '<div class="jsm-chat-message jsm-left jsm-button-template"><div class="jsm-header">' + text + '</div>';
 			$.each(buttons, function(index, button) {
-				template += '<div class="button">' + button + '</div>';
+				template += '<div class="jsm-button">' + button + '</div>';
 			});
 			template += '</div>';
 			this._addNewContent(this.options.leftUser, $(template), options.timestamp);
@@ -404,9 +404,9 @@
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			this._checkQuickReply(false);
-			var $button = this.$element.find('.jsm-chat-content .jsm-button-template:last .button:nth-child(' + (buttonIndex + 1) + ')').addClass('selected');
+			var $button = this.$element.find('.jsm-chat-content .jsm-button-template:last .jsm-button:nth-child(' + (buttonIndex + 1) + ')').addClass('jsm-selected');
 			setTimeout(function() {
-				$button.removeClass('selected');
+				$button.removeClass('jsm-selected');
 			}, 1500);
 			this.message(this.options.rightUser, $button.text(), { timestamp: false });
 		} else {
@@ -422,15 +422,15 @@
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			this._checkQuickReply(false);
-			var template = '<div class="jsm-chat-message left jsm-generic-template-wrapper"><div class="jsm-generic-template-background">';
+			var template = '<div class="jsm-chat-message jsm-left jsm-generic-template-wrapper"><div class="jsm-generic-template-background">';
 			$.each(items, function(index, item) {
-				template += '<div class="jsm-generic-template ' + (index === 0 ? 'selected' : '') + '">';
+				template += '<div class="jsm-generic-template ' + (index === 0 ? 'jsm-selected' : '') + '">';
 				if (item.imageUrl) {
-					template += '<div class="image" style="background-image: url(\'' + item.imageUrl + '\');"></div>';
+					template += '<div class="jsm-image" style="background-image: url(\'' + item.imageUrl + '\');"></div>';
 				}
-				template += '<div class="title"><p>' + item.title + '</p><p>' + item.subtitle + '</p></div>';
+				template += '<div class="jsm-title"><p>' + item.title + '</p><p>' + item.subtitle + '</p></div>';
 				$.each(item.buttons, function(index2, button) {
-					template += '<div class="button">' + button + '</div>';
+					template += '<div class="jsm-button">' + button + '</div>';
 				});
 				template += '</div>';
 			});
@@ -441,7 +441,7 @@
 			var width = this.$element.width();
 			$templates.css('width', 'calc(' + width + 'px - 6em - 4px)'); // FIXME extract margins (3em left / 3em right) and visible border sizes (4x 1px) from elements
 			// Adjust height of titles
-			var $titles = $templates.find('.title');
+			var $titles = $templates.find('.jsm-title');
 			$titles.css('height', Math.max.apply(Math, $titles.map(function() { return $(this).height(); })) + 'px');
 		} else {
 			this.options.script.push({
@@ -458,8 +458,8 @@
 			this._checkQuickReply(false);
 			var $scroller = this.$element.find('.jsm-generic-template-wrapper:last');
 			var width = $scroller.find('.jsm-generic-template:first').outerWidth(true) + 2;
-			$scroller.find('.jsm-generic-template').removeClass('selected');
-			$scroller.find('.jsm-generic-template:nth-child(' + (itemIndex + 1) + ')').addClass('selected');
+			$scroller.find('.jsm-generic-template').removeClass('jsm-selected');
+			$scroller.find('.jsm-generic-template:nth-child(' + (itemIndex + 1) + ')').addClass('jsm-selected');
 			$scroller.animate({
 				scrollLeft: itemIndex * width
 			}, 500);
@@ -476,9 +476,9 @@
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			this._checkQuickReply(false);
-			var $button = this.$element.find('.jsm-generic-template-wrapper:last .jsm-generic-template.selected .button:eq(' + buttonIndex + ')').addClass('selected');
+			var $button = this.$element.find('.jsm-generic-template-wrapper:last .jsm-generic-template.jsm-selected .jsm-button:eq(' + buttonIndex + ')').addClass('jsm-selected');
 			setTimeout(function() {
-				$button.removeClass('selected');
+				$button.removeClass('jsm-selected');
 			}, 1500);
 			this.message(this.options.rightUser, $button.text(), { timestamp: false });
 		} else {

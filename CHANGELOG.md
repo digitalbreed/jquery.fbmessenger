@@ -2,6 +2,10 @@
 
 Please note that all versions prior 1.0.0 are not production ready: the jQuery interface, UI structure and styling may change any time and the whole thing has not yet been tested exhaustively.
 
+## v0.0.6 (2016-09-10)
+
+- Fixed #1 by prefixing even inner class names to avoid name-clashes with e.g. Bootstrap's `.show`
+
 ## v0.0.5 (2016-08-31)
 
 - window resize support

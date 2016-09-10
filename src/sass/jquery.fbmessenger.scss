@@ -173,11 +173,11 @@ $message-bubble-padding: 0.6em 1em;
 				transition: transform 0.25s ease-in-out;
 				transform: translateY(3.5em);
 
-				&.show {
+				&.jsm-show {
 					transform: translateY(0);
 				}
 
-				&.selected {
+				&.jsm-selected {
 					background: $jsm-blue;
 					color: #fff;
 				}
@@ -328,35 +328,35 @@ $message-bubble-padding: 0.6em 1em;
 		position: relative;
 		z-index: 10;
 
-		&.left {
+		&.jsm-left {
 			float: left;
 			background: #f1f0f0;
 			border: 1px solid #f1f0f0;
 			margin-left: 3em;
 
-			&.has-previous {
+			&.jsm-has-previous {
 				border-top-left-radius: 0.25em;
 			}
-			&.has-next {
+			&.jsm-has-next {
 				border-bottom-left-radius: 0.25em;
 			}
 		}
-		&.right {
+		&.jsm-right {
 			float: right;
 			background: $jsm-blue;
 			border: 1px solid $jsm-blue;
 			color: #fff;
 			margin-right: 5%;
 
-			&.has-previous {
+			&.jsm-has-previous {
 				border-top-right-radius: 0.25em;
 			}
-			&.has-next {
+			&.jsm-has-next {
 				border-bottom-right-radius: 0.25em;
 			}
 		}
 
-		&.quickreply {
+		&.jsm-quickreply {
 			opacity: 0;
 			transform: translateY(1em);
 		}
@@ -394,10 +394,10 @@ $message-bubble-padding: 0.6em 1em;
 		margin-bottom: 0.5em;
 		padding: 0;
 		width: calc(100% - 6em);
-		.header {
+		.jsm-header {
 			padding: $message-bubble-padding;
 		}
-		.button:last-child {
+		.jsm-button:last-child {
 			border-bottom-left-radius: 1.45em;
 			border-bottom-right-radius: 1.45em;
 			border-bottom: none;
@@ -413,7 +413,7 @@ $message-bubble-padding: 0.6em 1em;
 		white-space: nowrap;
 		padding: 0 3em;
 
-		&.jsm-chat-message.left {
+		&.jsm-chat-message.jsm-left {
 			background: none;
 			border: none;
 			margin-left: 0;
@@ -436,7 +436,7 @@ $message-bubble-padding: 0.6em 1em;
 				display: inline-block;
 				margin-right: 0.5em;
 
-				.image {
+				.jsm-image {
 					background-size: cover;
 					box-sizing: border-box;
 					padding-top: 52%;
@@ -445,7 +445,7 @@ $message-bubble-padding: 0.6em 1em;
 					border-bottom: 1px solid #f1f0f0;
 				}
 
-				.title {
+				.jsm-title {
 					font-family: Arial, sans-serif;
 					border-bottom: 1px solid #f1f0f0;
 					padding: $message-bubble-padding;
@@ -463,7 +463,7 @@ $message-bubble-padding: 0.6em 1em;
 					}
 				}
 
-				.button:last-child {
+				.jsm-button:last-child {
 					border-bottom-left-radius: 0.2em;
 					border-bottom-right-radius: 0.2em;
 					border-bottom: none;
@@ -473,11 +473,11 @@ $message-bubble-padding: 0.6em 1em;
 					border-top-left-radius: 1.5em;
 					border-bottom-left-radius: 1.5em;
 
-					.image {
+					.jsm-image {
 						border-top-left-radius: 1.55em;
 					}
 
-					.button:last-child {
+					.jsm-button:last-child {
 						border-bottom-left-radius: 1.45em;
 						border-bottom-right-radius: 1.45em;
 						border-bottom: none;
@@ -487,23 +487,22 @@ $message-bubble-padding: 0.6em 1em;
 					border-top-right-radius: 1.5em;
 					border-bottom-right-radius: 1.5em;
 
-					.image {
+					.jsm-image {
 						border-top-right-radius: 1.55em;
 					}
 
-					.button:last-child {
+					.jsm-button:last-child {
 						border-bottom-left-radius: 1.45em;
 						border-bottom-right-radius: 1.45em;
 						border-bottom: none;
 					}
 				}
-
 			}
 		}
 	}
 
 	.jsm-button-template, .jsm-generic-template-wrapper {
-		.button {
+		.jsm-button {
 			margin: 0;
 			padding: 0.8em 1em;
 			background: #fff;
@@ -511,14 +510,14 @@ $message-bubble-padding: 0.6em 1em;
 			text-align: center;
 			overflow: hidden;
 			border-bottom: 1px solid #f1f0f0;
-			&.selected {
+			&.jsm-selected {
 				color: $jsm-light-gray;
 			}
 		}
-		&.has-previous .button:last-child {
+		&.jsm-has-previous .jsm-button:last-child {
 			border-top-left-radius: 0.25em;
 		}
-		&.has-next .button:last-child {
+		&.jsm-has-next .jsm-button:last-child {
 			border-bottom-left-radius: 0.25em;
 		}
 	}
