@@ -1,6 +1,7 @@
 $jsm-blue: #007aff;
 $jsm-light-gray: #959595;
 $jsm-dark-gray: #8b858c;
+$jsm-very-light-gray: #cecece;
 
 $message-bubble-padding: 0.6em 1em;
 
@@ -185,14 +186,33 @@ $message-bubble-padding: 0.6em 1em;
 		}
 	}
 
-	.jsm-get-started-button, .jsm-input-message {
-		border-top: 1px solid #b2b2b2;
+	.jsm-get-started {
+
+		border-top: 1px solid $jsm-very-light-gray;
+		text-align: center;
+
+		.jsm-get-started-info {
+			color: $jsm-very-light-gray;
+			font-size: 120%;
+			margin: 0.5em auto;
+		}
+		.jsm-get-started-button {
+			background: $jsm-blue;
+			font-size: 150%;
+			color: #fff;
+			margin: 0.5em;
+			border-radius: 0.25em;
+			padding: 0.5em;
+
+		}
+
+	}
+
+	.jsm-input-message {
+		border-top: 1px solid $jsm-very-light-gray;
 		font-size: 150%;
-		color: $jsm-blue;
 		text-align: center;
 		line-height: 2.5em;
-	}
-	.jsm-input-message {
 		color: $jsm-light-gray;
 		position: relative;
 
@@ -219,11 +239,66 @@ $message-bubble-padding: 0.6em 1em;
 	*/
 	.jsm-bot-welcome-message {
 		position: absolute;
-		top: 50%;
-		text-align: center;
-		color: $jsm-light-gray;
-		font-size: 120%;
-		padding: 0 0.5em;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: #fff;
+
+		.jsm-bot-welcome-banner {
+			background: no-repeat center center;
+			background-size: cover;
+			margin-top: 5em;
+			height: 12em;
+			position: relative;
+
+			img {
+				bottom: 0;
+				left: 50%;
+				margin-left: -3.5em;
+				margin-bottom: -3.5em;
+				position: absolute;
+				width: 7em;
+				height: 7em;
+				border: 2px solid #fff;
+				border-radius: 50%;
+			}
+		}
+		h1 {
+			margin: 2em 0 0;
+			text-align: center;
+			font-weight: normal;
+			font-size: 180%;
+		}
+		h2 {
+			text-align: center;
+			font-weight: normal;
+			font-size: 130%;
+			margin: 0.15em 0 0.25em;
+		}
+		& > p {
+			text-align: center;
+			color: $jsm-light-gray;
+			font-size: 130%;
+			padding: 0 2em;
+			margin: 0 0 2em;
+		}
+		div.jsm-bot-welcome-status {
+			@include clearfix;
+
+			padding: 0 2em;
+			margin-bottom: 2em;
+
+			svg {
+				width: 2.25em;
+				float: left;
+			}
+			p {
+				margin: 0 0 0 3em;
+				font-size: 130%;
+				padding-top: 0.15em;
+			}
+		}
 	}
 
 	/**

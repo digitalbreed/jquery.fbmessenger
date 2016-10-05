@@ -81,7 +81,26 @@
 				</div>\
 				<div class="jsm-chat-content">\
 					<div class="jsm-bot-welcome-message">\
-						<p>' + this.options.botWelcomeMessage + '</p>\
+						<div class="jsm-bot-welcome-banner" style="background-image:url(' + this.options.botBannerUrl + ')">\
+							<img src="' + this.options.botLogoUrl + '" />\
+						</div>\
+						<h1>' + this.options.botName + '</h1>\
+						<h2>' + this.options.botCategory + '</h2>\
+						<p>' + this.options.likeText + '</p>\
+						<div class="jsm-bot-welcome-status">\
+							<svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 48.439455 48.734171" >\
+								<g transform="translate(32.457 -592.65)"><path d="m-8.2363 593.65a23.219 21.268 0 0 0 -23.221 21.27 23.219 21.268 0 0 0 8.5977 16.5l-0.76758 7.9941 7.1309-4.6426a23.219 21.268 0 0 0 8.2598 1.416 23.219 21.268 0 0 0 23.219 -21.268 23.219 21.268 0 0 0 -23.219 -21.27z" fill-rule="evenodd" stroke="#007aff" stroke-width="2" fill="#fff"/></g>\
+							</svg>\
+							<p>Typically replies in minutes</p>\
+						</div>\
+						<div class="jsm-bot-welcome-status">\
+							<svg viewBox="0 0 49.096615 49.096615">\
+								<circle cx="24.548" stroke="#007aff" cy="24.548" r="23.548" stroke-width="2" fill="none"/>\
+								<path fill="#007aff" d="m20.023 19.97v0.90039h2.3906v16.504h-2.3906v0.89843h2.3965 4.2051 2.3984v-0.89843h-2.3984v-16.504-0.0371-0.86328h-6.6016z"/>\
+								<circle cx="24.519" cy="14.265" r="2.0487" fill="#007aff"/>\
+							</svg>\
+							<p>' + this.options.botWelcomeMessage + '</p>\
+						</div>\
 					</div>\
 					<div class="jsm-bot-info">\
 						<img src="' + this.options.botLogoUrl + '">\
@@ -95,8 +114,9 @@
 						<div class="jsm-quick-replies-container">\
 						</div>\
 					</div>\
-					<div class="jsm-get-started-button">\
-						Get started\
+					<div class="jsm-get-started">\
+						<p class="jsm-get-started-info">When you tap Get Started, ' + this.options.botName + ' will see your public info.</p>\
+						<div class="jsm-get-started-button">Get Started</div>\
 					</div>\
 					<div class="jsm-input-message jsm-hide">\
 						<img class="jsm-persistent-menu" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAaCAYAAADbhS54AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AgUFCEdwS1IvQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAARklEQVRIx+3VQQ0AIBADwZagDl0gCewVEzwuZKtg0s9aM1vSUK2dpoqz4iQlbTUfAwYMGLAPYN1LtJJWAgMGDBgwWvmulRdvjBDe+GiHkQAAAABJRU5ErkJggg==">\
@@ -120,7 +140,7 @@
 	Plugin.prototype.start = function(options) {
 		if (options === undefined || options.delay === undefined) {
 			if (this.options.state.welcomeMessageDisplayed) {
-				this.$element.find('.jsm-bot-welcome-message,.jsm-get-started-button').addClass('jsm-hide');
+				this.$element.find('.jsm-bot-welcome-message,.jsm-get-started').addClass('jsm-hide');
 				this.$element.find('.jsm-input-message').removeClass('jsm-hide');
 				this.options.state.welcomeMessageDisplayed = false;
 			}
@@ -513,7 +533,7 @@
 
 	Plugin.prototype.reset = function() {
 		$(this.element).find('.jsm-chat-content > :not(".jsm-bot-welcome-message,.jsm-bot-info")').remove();
-		$(this.element).find('.jsm-bot-welcome-message,.jsm-get-started-button').removeClass('jsm-hide');
+		$(this.element).find('.jsm-bot-welcome-message,.jsm-get-started').removeClass('jsm-hide');
 		$(this.element).find('.jsm-input-message').addClass('jsm-hide');
 		$(this.element).find('.jsm-chat-content')[0].scrollTop = 0;
 		this.options.state.welcomeMessageDisplayed = true;
