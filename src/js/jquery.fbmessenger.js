@@ -48,6 +48,31 @@
 		this.init();
 	}
 
+	Plugin.prototype._likeText = function(short) {
+		if (typeof this.options.likeTextFn === 'function') {
+			return this.options.likeTextFn(short);
+		} else {
+			var totalCount = this.options.likes ? this.options.likes.totalCount : undefined;
+			var text;
+			if (totalCount === undefined) {
+				text = '25K';
+			} else {
+				text = totalCount > 999 ? (totalCount / 1000).toFixed(1) + 'K' : totalCount;
+			}
+			text = text + ' people like this';
+			if (!short && this.options.likes) {
+				if (this.options.likes.friendName && this.options.likes.otherFriendsCount) {
+					text = text + ' including ' + this.options.likes.friendName + ' and ' + this.options.likes.otherFriendsCount + ' friends';
+				} else if (this.options.likes.friendName) {
+					text = text + ' including ' + this.options.likes.friendName;
+				} else if (this.options.likes.otherFriendsCount) {
+					text = text + ' including ' + this.options.likes.otherFriendsCount + ' friends';
+				}
+			}
+			return text;
+		}
+	}
+
 	Plugin.prototype.init = function() {
 		this.$element.append('\
 			<div class="jsm-iphone-content">\
@@ -86,7 +111,7 @@
 						</div>\
 						<h1>' + this.options.botName + '</h1>\
 						<h2>' + this.options.botCategory + '</h2>\
-						<p>' + this.options.likeText + '</p>\
+						<p>' + this._likeText(false) + '</p>\
 						<div class="jsm-bot-welcome-status">\
 							<svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 48.439455 48.734171" >\
 								<g transform="translate(32.457 -592.65)"><path d="m-8.2363 593.65a23.219 21.268 0 0 0 -23.221 21.27 23.219 21.268 0 0 0 8.5977 16.5l-0.76758 7.9941 7.1309-4.6426a23.219 21.268 0 0 0 8.2598 1.416 23.219 21.268 0 0 0 23.219 -21.268 23.219 21.268 0 0 0 -23.219 -21.27z" fill-rule="evenodd" stroke="#007aff" stroke-width="2" fill="#fff"/></g>\
@@ -105,7 +130,7 @@
 					<div class="jsm-bot-info">\
 						<img src="' + this.options.botLogoUrl + '">\
 						<div class="jsm-bot-info-name">' + this.options.botName + '</div>\
-						<div class="jsm-bot-info-likes">25k people like this</div>\
+						<div class="jsm-bot-info-likes">' + this._likeText(true) + '</div>\
 						<div class="jsm-bot-info-category">' + this.options.botCategory + '</div>\
 					</div>\
 				</div>\
@@ -341,20 +366,20 @@
 			var $scroller = this.$element.find('.jsm-quick-replies');
 			var $container = $scroller.find('.jsm-quick-replies-container');
 			var $option = this.$element.find('.jsm-quick-reply-option:nth-child(' + (quickReplyIndex + 1) + ')');
-			var optionPosX = $option.position().left;
+			var scrollLeft = $scroller.prop('scrollLeft');
+			var optionPosX = scrollLeft + $option.position().left;
 			var target = -1;
 			// Scroll only if quick reply is out of sight
-			if (optionPosX > $scroller.width()) {
-				target = $scroller.width() - $option.outerWidth();
-			} else if (optionPosX < 0) {
+			if (optionPosX + $option.outerWidth() > $scroller.width()) {
+				target = optionPosX - parseInt($option.css('marginRight'));
+			} else if (optionPosX < scrollLeft) {
 				var padding = ($container.outerWidth() - $container.width()) / 2;
-				target = $scroller.prop('scrollLeft') + optionPosX - padding;
+				target = Math.max(0, optionPosX - padding);
 			}
 			if (target > -1) {
-				var delta = Math.abs($scroller.prop('scrollLeft') - target) * 2;
 				$scroller.animate({
 					scrollLeft: target
-				}, delta);
+				}, Math.abs(scrollLeft - target));
 			}
 		} else {
 			this.options.script.push({

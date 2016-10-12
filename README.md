@@ -88,6 +88,7 @@ Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your 
 | `('message', user, text, options)` | Creates a new message sent by user with symbolic name `user` with text `text` and (optional) timestamp `options.timestamp` (must be type `Date`).
 | `('typingIndicator', options)` | Enables the typing indicator for the left user. It remains turned on until a new message is sent by the left user.
 | `('showQuickReplies', quickReplies, options)` | Moves the quick reply options into view, where `quickReplies` is an array of strings.
+| `('scrollQuickReplies', quickReplyIndex, options)` | Scrolls the quick reply with the given index into view.
 | `('selectQuickReply', quickReplyIndex, options)` | Selects the quick reply with index `quickReplyIndex`.
 | `('showButtonTemplate', text, buttons, options)` | Shows a button template with the given buttons, where `buttons` is an array of strings.
 | `('selectButtonTemplate', buttonIndex, options)` | Selects the button with index `buttonIndex`.
@@ -103,8 +104,11 @@ The `options` parameter is optional and may contain an attribute `delay`. If `de
 | Option | Description
 | ------ | -----------
 | `botLogoUrl` | URL of the image to display as the bot logo.
+| `botBannerUrl` | URL of the banner image to display on the welcome page.
 | `botName` | Name of the bot, appears in the navigation bar and in the bot information at the beginning of the chat.
 | `botCategory` | Category of the bot, appears in the bot information below the bot name.
+| `likes` | A hash containing information about the likes displayed on the welcome page and bot information, using the following format: `{ totalCount: 25000 /* the total number of likes */, friendName: 'John Doe' /* the name of a friend mentioned as an example */, otherFriendsCount: 42 /* the number of other friends */ }`
+| `likesTextFn` | A function which returns the like text, overrules any setting in the `likes` hash. Called with a boolean parameter "short", indicating whether the text is needed for the short version at the top of the messages flow or the long version on the welcome page.
 | `botWelcomeMessage` | A short welcome message displayed before the user initiates the conversation by clicking "Get Started".
 | `leftUser` | Symbolic name of the left chat user (default `bot`). Used to identify the origin of a message.
 | `rightUser` | Symbolic name of the right chat user (default `user`). Used to identify the origin of a  message.
@@ -121,24 +125,41 @@ The `options` parameter is optional and may contain an attribute `delay`. If `de
 
 I plan to work on these items very soon. If you need one of those to put jQuery.fbMessenger to good use, check back in a few days.
 
-* Message sent/received/ last read indicator
+* Message sent / received / last read indicator
+* Fake location quick reply / sending
+* Fake keyboard input
 * ~~Generic template support~~ (available since v0.0.4 2016-08-28)
 * ~~Button template support~~ (available since v0.0.3 2016-08-23)
 * ~~Quick replies~~ (available since v0.0.2 2016-08-22)
 * ~~Resize support~~ (available since v0.0.5 2016-08-31)
-* Style updates
+* Style updates (ongoing)
 * Localization
 
 ### Long term
 
 Better don't hold your breath for these ones. If you're in need of one of those, drop me a line or consider submitting these yourself in a PR.
 
-* Fake keyboard input
 * "Browser"
 * Receipt template support
 * Image/audio/file attachments
 * Build an editor around it and allow exporting a HTML file, for people without any coding experience
 * Airline templates (least priority, as they need lots of customization for very specific use cases)
+
+## Troubleshooting
+
+**You're getting the error `Must call start before sending messages`**:
+
+This happens if you add events like text messages without having called `start` before; that way, the text would never be displayed. You'll often see this happening when you accidentially forget to add a `delay` option to a call when you script a chain of events for your demo.
+
+## Credits
+
+I am using a number of free photos for the bot demonstration:
+
+* Bot page banner from unsplash.com, photo by Luca Upper (Basel, Switzerland): https://unsplash.com/photos/Z-4kOr93RCI
+* Wedding theme image from unsplash.com, photo by Anne Edgar (Cambridge, Canada): https://unsplash.com/photos/peFXR4binOk
+* Birthday theme image from unsplash.com, photo by Annie Spratt: https://unsplash.com/photos/10b8Lvvc-4g
+* Christmas theme image from unsplash.com, photo by Darren Coleshill: https://unsplash.com/photos/ziRH3h-5PuU
+* Bot icon extracted from a free gift graphics collection, designed by Freepik: http://www.freepik.com/free-vector/cartoon-gifts_791778.htm
 
 ## Legal
 
