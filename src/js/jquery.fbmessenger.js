@@ -107,7 +107,7 @@
 				<div class="jsm-chat-content">\
 					<div class="jsm-bot-welcome-message">\
 						<div class="jsm-bot-welcome-banner" style="background-image:url(' + this.options.botBannerUrl + ')">\
-							<img src="' + this.options.botLogoUrl + '" />\
+							<div class="jsm-bot-welcome-icon"><img src="' + this.options.botLogoUrl + '" /></div>\
 						</div>\
 						<h1>' + this.options.botName + '</h1>\
 						<h2>' + this.options.botCategory + '</h2>\
@@ -340,7 +340,7 @@
 			$.each(quickReplies, function(index, quickReply) {
 				$quickReplies.append('<div class="jsm-quick-reply-option" style="transition-delay: ' + (index * 0.1).toFixed(1) + 's">' + quickReply + '</div>');
 			});
-			$element.find('.jsm-quick-replies').removeClass('jsm-hide');
+			$element.find('.jsm-quick-replies').removeClass('jsm-hide').prop('scrollLeft', 0);
 			// Trigger transition to let the options appear
 			var that = this;
 			setTimeout(function() {
@@ -507,7 +507,7 @@
 			$scroller.find('.jsm-generic-template:nth-child(' + (itemIndex + 1) + ')').addClass('jsm-selected');
 			$scroller.animate({
 				scrollLeft: itemIndex * width
-			}, 500);
+			}, 250);
 		} else {
 			this.options.script.push({
 				method: 'scrollGenericTemplate',
@@ -557,10 +557,11 @@
 	}
 
 	Plugin.prototype.reset = function() {
-		$(this.element).find('.jsm-chat-content > :not(".jsm-bot-welcome-message,.jsm-bot-info")').remove();
-		$(this.element).find('.jsm-bot-welcome-message,.jsm-get-started').removeClass('jsm-hide');
-		$(this.element).find('.jsm-input-message').addClass('jsm-hide');
-		$(this.element).find('.jsm-chat-content')[0].scrollTop = 0;
+		this.$element.find('.jsm-quick-replies-container').empty();
+		this.$element.find('.jsm-chat-content > :not(".jsm-bot-welcome-message,.jsm-bot-info")').remove();
+		this.$element.find('.jsm-bot-welcome-message,.jsm-get-started').removeClass('jsm-hide');
+		this.$element.find('.jsm-input-message').addClass('jsm-hide');
+		this.$element.find('.jsm-chat-content')[0].scrollTop = 0;
 		this.options.state.welcomeMessageDisplayed = true;
 		this.options.state.quickRepliesDisplayed = false;
 	}

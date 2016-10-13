@@ -252,16 +252,23 @@ $message-bubble-padding: 0.6em 1em;
 			height: 12em;
 			position: relative;
 
-			img {
+			.jsm-bot-welcome-icon {
 				bottom: 0;
 				left: 50%;
-				margin-left: -3.5em;
-				margin-bottom: -3.5em;
+				margin-left: calc(-3.5em - 1px);
+				margin-bottom: calc(-3.5em - 1px);
 				position: absolute;
-				width: 7em;
-				height: 7em;
-				border: 2px solid #fff;
+				width: calc(7em + 2px);
+				height: calc(7em + 2px);
+				background: #fff;
 				border-radius: 50%;
+
+				img {
+					margin: 1px;
+					width: 7em;
+					height: 7em;
+					border-radius: 50%;
+				}
 			}
 		}
 		h1 {
