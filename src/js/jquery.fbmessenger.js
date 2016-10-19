@@ -105,6 +105,11 @@
 					</div>\
 				</div>\
 				<div class="jsm-chat-content">\
+					<div class="jsm-chat-progress-indicator jsm-hide">\
+						<div class="jsm-bot-icon">\
+							<img src="' + this.options.botLogoUrl + '" />\
+						</div>\
+					</div>\
 					<div class="jsm-bot-welcome-message">\
 						<div class="jsm-bot-welcome-banner" style="background-image:url(' + this.options.botBannerUrl + ')">\
 							<div class="jsm-bot-welcome-icon"><img src="' + this.options.botLogoUrl + '" /></div>\
@@ -228,7 +233,7 @@
 			$templates.css('width', 'calc(' + width + 'px - 6em - 4px)');
 			$templates.each(function(index) {
 				var $titles = $(this).find('.title');
-				$titles.css('height', Math.max.apply(Math, $titles.map(function() { return $(this).height(); })) + 'px');
+				$titles.css('height', Math.max.apply(Math, $titles.map(function() { return $(this).outerHeight(); })) + 'px');
 			});
 			// Adjust user icon positions
 			var $leftUserWrappers = that.$element.find('.jsm-user-wrapper.' + that.options.leftUser);
@@ -243,6 +248,8 @@
 	}
 
 	Plugin.prototype._addNewContent = function(user, $payload, timestamp) {
+		var that = this;
+		var fontSize = parseInt($(this.element).css('font-size'));
 		var $content = this.$element.find('.jsm-chat-content');
 		$content.find('.jsm-chat-row:has(.jsm-typing-indicator)').remove(); // FIXME don't remove if message is by right user!
 		// Create a user-specific wrapper and create/get the user icon in case of left side
@@ -272,9 +279,8 @@
 		$wrapper.append($payload);
 		// Now throw the whole row into the user-wrapper
 		$user.append($wrapper);
-		// If the icon needs to be maintained, position it correctly or animate it down to the newest message
+		// If the user icon needs to be maintained, position it correctly or animate it down to the newest message
 		if ($icon) {
-			var fontSize = parseInt($(this.element).css('font-size'));
 			setTimeout(function() {
 				var top = $user.height() - 3.5 * fontSize; // 3.5 = image size 3 + 0.5 margin bottom
 				if (newWrapper) {
@@ -296,6 +302,21 @@
 				$(this).addClass('jsm-has-next');
 			}
 		});
+		// Also update the progress icon
+		if ($user.hasClass(this.options.leftUser)) {
+			var $indicator = $content.find('.jsm-chat-progress-indicator');
+			setTimeout(function() {
+				var position = $user.position().top + $user.height() - 1 * fontSize;
+				if ($indicator.hasClass('jsm-hide')) {
+					$indicator.removeClass('jsm-hide');
+					$indicator.css('top', position + 'px');
+				} else {
+					$indicator.animate({
+						top: $content.scrollTop() + position
+					}, 250);
+				}
+			}, 1);
+		}
 		// Scroll the entire view down
 		this._scrollDown();
 	}
@@ -487,7 +508,7 @@
 			$templates.css('width', 'calc(' + width + 'px - 6em - 4px)'); // FIXME extract margins (3em left / 3em right) and visible border sizes (4x 1px) from elements
 			// Adjust height of titles
 			var $titles = $templates.find('.jsm-title');
-			$titles.css('height', Math.max.apply(Math, $titles.map(function() { return $(this).height(); })) + 'px');
+			$titles.css('height', Math.max.apply(Math, $titles.map(function() { return $(this).outerHeight(); })) + 'px');
 		} else {
 			this.options.script.push({
 				method: 'showGenericTemplate',
@@ -558,9 +579,9 @@
 
 	Plugin.prototype.reset = function() {
 		this.$element.find('.jsm-quick-replies-container').empty();
-		this.$element.find('.jsm-chat-content > :not(".jsm-bot-welcome-message,.jsm-bot-info")').remove();
+		this.$element.find('.jsm-chat-content > :not(".jsm-bot-welcome-message,.jsm-bot-info,.jsm-chat-progress-indicator")').remove();
 		this.$element.find('.jsm-bot-welcome-message,.jsm-get-started').removeClass('jsm-hide');
-		this.$element.find('.jsm-input-message').addClass('jsm-hide');
+		this.$element.find('.jsm-input-message,.jsm-chat-progress-indicator').addClass('jsm-hide');
 		this.$element.find('.jsm-chat-content')[0].scrollTop = 0;
 		this.options.state.welcomeMessageDisplayed = true;
 		this.options.state.quickRepliesDisplayed = false;

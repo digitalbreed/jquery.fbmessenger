@@ -161,6 +161,7 @@ $message-bubble-padding: 0.6em 1em;
 		.jsm-quick-replies-container {
 			white-space: nowrap;
 			padding: 0 0.5em;
+			display: inline-block;
 
 			.jsm-quick-reply-option {
 				padding: 0.6em 1em;
@@ -194,7 +195,7 @@ $message-bubble-padding: 0.6em 1em;
 		.jsm-get-started-info {
 			color: $jsm-very-light-gray;
 			font-size: 120%;
-			margin: 0.5em auto;
+			margin: 0.5em;
 		}
 		.jsm-get-started-button {
 			background: $jsm-blue;
@@ -233,6 +234,24 @@ $message-bubble-padding: 0.6em 1em;
 	overflow: hidden;
 	position: relative;
 	flex: 1;
+
+	/**
+		Indicates the bot's reading progress of the conversation.
+	*/
+	.jsm-chat-progress-indicator {
+		position: absolute;
+		top: 22%;
+		right: 0.5em;
+		width: 1em;
+		height: 1em;
+		z-index: 5;
+
+		.jsm-bot-icon img {
+			width: 1em;
+			height: 1em;
+			border-radius: 50%;
+		}
+	}
 
 	/**
 		Displayed before the Get Started button is pressed.
