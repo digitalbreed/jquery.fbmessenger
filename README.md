@@ -125,15 +125,15 @@ The `options` parameter is optional and may contain an attribute `delay`. If `de
 
 I plan to work on these items very soon. If you need one of those to put jQuery.fbMessenger to good use, check back in a few days.
 
-* Message sent / received / last read indicator
+* Style updates (ongoing)
 * Fake location quick reply / sending
 * Fake keyboard input
+* Localization
+* ~~Message sent / received / last read indicator~~ (available since v0.0.7 2016-10-20)
 * ~~Generic template support~~ (available since v0.0.4 2016-08-28)
 * ~~Button template support~~ (available since v0.0.3 2016-08-23)
 * ~~Quick replies~~ (available since v0.0.2 2016-08-22)
 * ~~Resize support~~ (available since v0.0.5 2016-08-31)
-* Style updates (ongoing)
-* Localization
 
 ### Long term
 
