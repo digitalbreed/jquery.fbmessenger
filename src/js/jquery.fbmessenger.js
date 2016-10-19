@@ -251,6 +251,11 @@
 		var that = this;
 		var fontSize = parseInt($(this.element).css('font-size'));
 		var $content = this.$element.find('.jsm-chat-content');
+		// Remove any user message status displays if a new bot message appears
+		if (user === this.options.leftUser) {
+			$content.find('.jsm-status').remove();
+		}
+		// Remove existing typing indicators
 		$content.find('.jsm-chat-row:has(.jsm-typing-indicator)').remove(); // FIXME don't remove if message is by right user!
 		// Create a user-specific wrapper and create/get the user icon in case of left side
 		var $user = $content.find('.jsm-user-wrapper:last');
@@ -326,7 +331,41 @@
 			this._checkWelcomeMessage();
 			this._checkUser(user);
 			var sideClass = user === this.options.leftUser ? 'jsm-left' : user === this.options.rightUser ? 'jsm-right' : '';
-			this._addNewContent(user, $('<div class="jsm-chat-message ' + sideClass + ' ' + (options.className || '') + '">' + text + '</div>'), options.timestamp);
+			var statusDisplay = '';
+			if (user === this.options.rightUser) {
+				// Built with reckless abandon in Inkscape ;)
+				// If someone knows how to normalize values during export, please let me know.
+				statusDisplay = '<div class="jsm-status">' +
+									'<svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 59.15224 59.754372">' +
+									'<g transform="translate(-243.19 -357.27)" stroke="#007aff" stroke-width="5" fill="none">' +
+									'<ellipse rx="27.076" ry="27.377" cy="387.15" cx="272.77"/>' +
+									'<path d="m259.07 388.96 7.6772 8.1288 19.871-19.72"/>' +
+									'</g>' +
+									'</svg>' +
+									'<svg class="jsm-hide" preserveAspectRatio="xMidYMid meet" viewBox="0 0 59.15224 59.754372">' +
+									'<g transform="translate(-243.19 -357.27)" stroke-width="5">' +
+									'<ellipse rx="27.076" ry="27.377" stroke="#007aff" cy="387.15" cx="272.77" fill="#007aff"/>' +
+									'<path d="m259.07 388.96 7.6772 8.1288 19.871-19.72" stroke="#fff" fill="none"/>' +
+									'</g>' +
+									'</svg>' +
+									'</div>';
+			}
+			var $content = $('<div class="jsm-chat-message ' +
+								sideClass +
+								' '+
+								(options.className || '') +
+								'">' +
+								text +
+								statusDisplay +
+								'</div>'
+							);
+			this._addNewContent(user, $content, options.timestamp);
+			if (statusDisplay) {
+				setTimeout(function() {
+					$content.find('svg:first').addClass('jsm-hide');
+					$content.find('svg:last').removeClass('jsm-hide');
+				}, 300);
+			}
 		} else {
 			this.options.script.push({
 				method: 'message',

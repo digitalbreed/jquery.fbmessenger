@@ -241,14 +241,14 @@ $message-bubble-padding: 0.6em 1em;
 	.jsm-chat-progress-indicator {
 		position: absolute;
 		top: 22%;
-		right: 0.5em;
-		width: 1em;
-		height: 1em;
+		right: 0.15em;
+		width: 1.2em;
+		height: 1.2em;
 		z-index: 5;
 
 		.jsm-bot-icon img {
-			width: 1em;
-			height: 1em;
+			width: 1.2em;
+			height: 1.2em;
 			border-radius: 50%;
 		}
 	}
@@ -454,6 +454,16 @@ $message-bubble-padding: 0.6em 1em;
 			}
 			&.jsm-has-next {
 				border-bottom-right-radius: 0.25em;
+			}
+
+			.jsm-status {
+				position: absolute;
+				font-size: 76.92%;
+				right: -1.5em;
+				bottom: 0;
+				width: 1.2em;
+				height: 1.2em;
+				border-radius: 50%;
 			}
 		}
 
