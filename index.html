@@ -70,67 +70,80 @@
 		<script type="text/javascript">
 			$(function() {
 				var now = new Date();
-				$('.screen-content').fbMessenger()
-					.fbMessenger('start', { delay: 2000 } )
+				$('.screen-content').fbMessenger({
+						botName: 'Present Finder',
+						botBannerUrl: 'unsplash-presentfinder-banner-luca-upper.jpg',
+						botLogoUrl: 'botlogo-freepik.png',
+						botWelcomeMessage: 'Present Finder helps you finding lovely and unique gifts for any occasion. Just answer a few questions and you\'re all set!',
+						likes: {
+							totalCount: 25123,
+							friendName: 'John Doe',
+							otherFriendsCount: 42
+						}
+					})
+					.fbMessenger('start', { delay: 4000 } )
 					.fbMessenger('message', 'user', 'Get Started', { timestamp: now, delay: 250 })
 					.fbMessenger('typingIndicator', { delay: 500 })
-					.fbMessenger('message', 'bot', 'Hey there! I am the jQuery.fbMessenger demo.', { timestamp: now, delay: 3000 })
-					.fbMessenger('typingIndicator', { delay: 1000 })
-					.fbMessenger('message', 'bot', 'You can use me to create short demos of a Messenger interaction.', { timestamp: now, delay: 4000 })
-					.fbMessenger('message', 'user', 'Wow, sounds awesome!', { timestamp: now, delay: 4000 })
-					.fbMessenger('typingIndicator', { delay: 1000 })
-					.fbMessenger('message', 'bot', 'It is!', { timestamp: now, delay: 1000 })
-					.fbMessenger('message', 'user', 'Do you support quick replies already?', { timestamp: now, delay: 2000 })
-					.fbMessenger('typingIndicator', { delay: 1000 })
-					.fbMessenger('message', 'bot', 'Of course! How do you like it?', { timestamp: now, delay: 2000 })
-					.fbMessenger('showQuickReplies', [ 'Awesome!', 'Works for me', 'Needs some improvement', '#Fail' ], { delay: 0 })
-					.fbMessenger('scrollQuickReplies', 3, { delay: 2000 })
+					.fbMessenger('message', 'bot', 'Hey there! I am Present Finder, your friendly bot to help you finding... well, you guessed it.', { timestamp: now, delay: 2000 })
+					.fbMessenger('typingIndicator', { delay: 3000 })
+					.fbMessenger('message', 'bot', 'Let\'s start with the basics, what\'s your budget? Select from the options below or enter an exact amount as a limit.', { timestamp: now, delay: 4000 })
+					.fbMessenger('showQuickReplies', [
+						'Less than 5$',
+						'Up to 20$',
+						'Up to 50$',
+						'Up to 100$',
+						'Money doesn\'t matter.'
+					], { timestamp: now, delay: 0 })
+					.fbMessenger('scrollQuickReplies', 3, { delay: 4000 })
 					.fbMessenger('scrollQuickReplies', 0, { delay: 1000 })
-					.fbMessenger('selectQuickReply', 0, { delay: 1000 })
-					.fbMessenger('message', 'user', 'And what about button templates?', { timestamp: now, delay: 2000 })
+					.fbMessenger('scrollQuickReplies', 4, { delay: 1000 })
+					.fbMessenger('selectQuickReply', 4, { delay: 1000 })
 					.fbMessenger('typingIndicator', { delay: 1000 })
-					.fbMessenger('showButtonTemplate', 'Got you covered. Like?', ['Hell yeah', 'Meh'], { timestamp: now, delay: 1000})
-					.fbMessenger('selectButtonTemplate', 1, { delay: 2000 })
+					.fbMessenger('message', 'bot', 'Best thing I\'ve heard today!', { timestamp: now, delay: 1000 })
 					.fbMessenger('typingIndicator', { delay: 500 })
-					.fbMessenger('message', 'bot', 'I knew you\'d like it!', { timestamp: now, delay: 1000 })
-					.fbMessenger('typingIndicator', { delay: 500 })
-					.fbMessenger('message', 'bot', 'While we\'re at it, let me show you how I do generic templates:', { timestamp: now, delay: 3000 })
-					.fbMessenger('typingIndicator', { delay: 500 })
+					.fbMessenger('message', 'bot', 'Let\'s narrow things down. What\'s the occasion?', { timestamp: now, delay: 1000 })
 					.fbMessenger('showGenericTemplate', [
 						{
-							imageUrl: 'holidays1.jpg',
-							title: 'Majorca',
-							subtitle: 'First holidays with kids at playa Sa Coma (June 2016)',
+							imageUrl: 'unsplash-birthday-annie-spratt.jpg',
+							title: 'Birthday',
+							subtitle: 'Find presents for a birthday.',
 							buttons: [
-								'Button 1',
-								'Button 2'
+								'Select Birthday'
 							]
 						},
 						{
-							imageUrl: 'holidays2.jpg',
-							title: 'Paris',
-							subtitle: ' Sacré-Cœur de Montmartre in beautiful afternoon sunlight (April 2016)',
+							imageUrl: 'unsplash-christmas-darren-coleshill.jpg',
+							title: 'Christmas',
+							subtitle: 'Find seasonal presents for Christmas.',
 							buttons: [
-								'Button 1',
-								'Button 2'
+								'Select Christmas'
 							]
 						},
 						{
-							imageUrl: 'holidays3.jpg',
-							title: 'Barcelona',
-							subtitle: 'Panorama of Barcelona from the Temple Expiatori del Sagrat Cor on Tibidabo (June 2015)',
+							imageUrl: 'unsplash-wedding-anne-edgar.jpg',
+							title: 'Wedding',
+							subtitle: 'Find presents for bride and groom.',
 							buttons: [
-								'Button 1',
-								'Button 2'
+								'Select Wedding'
 							]
 						}
 					], { timestamp: now, delay: 2000 })
 					.fbMessenger('scrollGenericTemplate', 1, { delay: 1000 })
 					.fbMessenger('scrollGenericTemplate', 2, { delay: 1000 })
-					.fbMessenger('scrollGenericTemplate', 0, { delay: 1000 })
+					.fbMessenger('scrollGenericTemplate', 1, { delay: 1000 })
+					.fbMessenger('selectGenericTemplate', 0, { delay: 1000 })
+					.fbMessenger('typingIndicator', { delay: 500 })
+					.fbMessenger('message', 'bot', 'Awwww... so it\'s that time of the year again! 🎅🎄🎁', { timestamp: now, delay: 2000 })
+					.fbMessenger('typingIndicator', { delay: 500 })
+					.fbMessenger('showButtonTemplate', 'Who\'s the present for?', [
+						'Significant Other',
+						'Family or close friend',
+						'Acquaintance or colleague',
+						'Business partner'
+					], { timestamp: now, delay: 1000})
+
 					.fbMessenger('message', 'user', 'One more time!', { timestamp: now, delay: 5000 })
 					.fbMessenger('run');
-
 			});
 		</script>
 
