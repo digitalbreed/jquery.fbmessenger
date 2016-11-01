@@ -39,19 +39,23 @@ $message-bubble-padding: 0.6em 1em;
 /**
 	Wrapper for all phone screen content
 */
-.jsm-iphone-content {
-	text-align: left;
-	font-family: 'San Francisco', 'Helvetica Neue', Helvetica, sans-serif;
+.jsm-iphone-content-wrapper {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
+	max-height: 100%;
+}
+.jsm-iphone-content {
+	text-align: left;
+	font-family: 'San Francisco', 'Helvetica Neue', Helvetica, sans-serif;
+	display: table;
+	table-layout: fixed;
 	background: #fff;
 	color: #030303;
+	width: 100%;
+	height: 100%;
 }
 
 /**
@@ -151,6 +155,8 @@ $message-bubble-padding: 0.6em 1em;
 	background: #fff;
 	z-index: 10;
 	margin-top: 0.5em;
+	display: table-row;
+	height: 0;
 
 	/**
 		Contains the quick reply options.
@@ -228,13 +234,27 @@ $message-bubble-padding: 0.6em 1em;
 	}
 }
 
+.jsm-chat-content-wrapper {
+	display: table-row;
+	width: 100%;
+	height: 100%;
+}
+.jsm-chat-content-wrapper-2 {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
 .jsm-chat-content {
+	max-height: 100%;
 	width: 100%;
 	height: 100%;
 	background: #fff;
 	overflow: hidden;
-	position: relative;
-	flex: 1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	bottom: 0;
 
 	/**
 		Indicates the bot's reading progress of the conversation.
@@ -316,9 +336,16 @@ $message-bubble-padding: 0.6em 1em;
 			padding: 0 2em;
 			margin-bottom: 2em;
 
-			svg {
-				width: 2.25em;
+			div.jsm-bot-welcome-status-svg-wrapper {
+				width: 3em;
+				height: 3em;
+				overflow: hidden;
 				float: left;
+
+				svg {
+					width: 2.25em;
+					height: 2.25em;
+				}
 			}
 			p {
 				margin: 0 0 0 3em;
@@ -485,15 +512,19 @@ $message-bubble-padding: 0.6em 1em;
 			border-radius: 50%;
 			display: inline-block;
 			margin-right: 0.25em;
+			-webkit-animation: jsm-typing-indicator-anim 2s infinite;
 			animation: jsm-typing-indicator-anim 2s infinite;
 		}
 		span:nth-child(1) {
+			-webkit-animation-delay: 0s;
 			animation-delay: 0s;
 		}
 		span:nth-child(2) {
+			-webkit-animation-delay: 0.15s;
 			animation-delay: 0.15s;
 		}
 		span:nth-child(3) {
+			-webkit-animation-delay: 0.3s;
 			animation-delay: 0.3s;
 			margin-right: 0;
 		}
@@ -644,5 +675,16 @@ $message-bubble-padding: 0.6em 1em;
     }
     40% {
     	transform: translate(0, 0);
+    }
+}
+@-webkit-keyframes jsm-typing-indicator-anim {
+    0% {
+    	-webkit-transform: translate(0, 0);
+    }
+    20% {
+    	-webkit-transform: translate(0, -0.5em);
+    }
+    40% {
+    	-webkit-transform: translate(0, 0);
     }
 }

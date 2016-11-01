@@ -75,6 +75,7 @@
 
 	Plugin.prototype.init = function() {
 		this.$element.append('\
+			<div class="jsm-iphone-content-wrapper">\
 			<div class="jsm-iphone-content">\
 				<div class="jsm-status-navbar">\
 					<div class="jsm-status-bar">\
@@ -104,6 +105,7 @@
 						Manage\
 					</div>\
 				</div>\
+				<div class="jsm-chat-content-wrapper"><div class="jsm-chat-content-wrapper-2">\
 				<div class="jsm-chat-content">\
 					<div class="jsm-chat-progress-indicator jsm-hide">\
 						<div class="jsm-bot-icon">\
@@ -118,17 +120,15 @@
 						<h2>' + this.options.botCategory + '</h2>\
 						<p>' + this._likeText(false) + '</p>\
 						<div class="jsm-bot-welcome-status">\
-							<svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 48.439455 48.734171" >\
-								<g transform="translate(32.457 -592.65)"><path d="m-8.2363 593.65a23.219 21.268 0 0 0 -23.221 21.27 23.219 21.268 0 0 0 8.5977 16.5l-0.76758 7.9941 7.1309-4.6426a23.219 21.268 0 0 0 8.2598 1.416 23.219 21.268 0 0 0 23.219 -21.268 23.219 21.268 0 0 0 -23.219 -21.27z" fill-rule="evenodd" stroke="#007aff" stroke-width="2" fill="#fff"/></g>\
-							</svg>\
+							<div class="jsm-bot-welcome-status-svg-wrapper">\
+								<svg viewBox="0 0 50 50"><path d="M24.22 1A23.219 21.268 0 0 0 1 22.27a23.219 21.268 0 0 0 8.597 16.5l-.767 7.994 7.13-4.643a23.219 21.268 0 0 0 8.26 1.416A23.219 21.268 0 0 0 47.44 22.27 23.219 21.268 0 0 0 24.22 1z" fill-rule="evenodd" stroke="#007aff" stroke-width="2" fill="#fff"/></svg>\
+							</div>\
 							<p>Typically replies in minutes</p>\
 						</div>\
 						<div class="jsm-bot-welcome-status">\
-							<svg viewBox="0 0 49.096615 49.096615">\
-								<circle cx="24.548" stroke="#007aff" cy="24.548" r="23.548" stroke-width="2" fill="none"/>\
-								<path fill="#007aff" d="m20.023 19.97v0.90039h2.3906v16.504h-2.3906v0.89843h2.3965 4.2051 2.3984v-0.89843h-2.3984v-16.504-0.0371-0.86328h-6.6016z"/>\
-								<circle cx="24.519" cy="14.265" r="2.0487" fill="#007aff"/>\
-							</svg>\
+							<div class="jsm-bot-welcome-status-svg-wrapper">\
+								<svg viewBox="0 0 52 52"><circle cx="24.548" stroke="#007aff" cy="24.548" r="23.548" stroke-width="2" fill="none"/><path fill="#007aff" d="M20.023 19.97v.9h2.39v16.504h-2.39v.899h9v-.899h-2.398V19.97h-6.602z"/><circle cx="24.519" cy="14.265" r="2.049" fill="#007aff"/></svg>\
+							</div>\
 							<p>' + this.options.botWelcomeMessage + '</p>\
 						</div>\
 					</div>\
@@ -139,6 +139,7 @@
 						<div class="jsm-bot-info-category">' + this.options.botCategory + '</div>\
 					</div>\
 				</div>\
+				</div></div>\
 				<div class="jsm-bottom-bar">\
 					<div class="jsm-quick-replies jsm-hide">\
 						<div class="jsm-quick-replies-container">\
@@ -153,6 +154,7 @@
 						Type a message&hellip;\
 					</div>\
 				</div>\
+			</div>\
 			</div>\
 		');
 
