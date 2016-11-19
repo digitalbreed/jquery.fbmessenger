@@ -21,6 +21,7 @@
 		displayedCarrier: 'o2-de',
 		displayedTime: '22:00',
 		scrollTimeMs: 500,
+		timeScale: 1.0,
 		loop: true,
 		dateFormat: function(date) {
 			var pad = function(val) {
@@ -295,7 +296,7 @@
 				} else {
 					$icon.animate({
 						top: top
-					}, 250);
+					}, 250 * that.options.timeScale);
 				}
 			}, 1);
 		}
@@ -320,7 +321,7 @@
 				} else {
 					$indicator.animate({
 						top: $content.scrollTop() + position
-					}, 250);
+					}, 250 * that.options.timeScale);
 				}
 			}, 1);
 		}
@@ -366,7 +367,7 @@
 				setTimeout(function() {
 					$content.find('svg:first').addClass('jsm-hide');
 					$content.find('svg:last').removeClass('jsm-hide');
-				}, 300);
+				}, 300 * this.options.timeScale);
 			}
 		} else {
 			this.options.script.push({
@@ -397,10 +398,11 @@
 			this._checkWelcomeMessage();
 			this._checkQuickReply(false);
 			var $element = this.$element;
+			var timeScale = this.options.timeScale;
 			// Create quick reply options
 			var $quickReplies = $element.find('.jsm-quick-replies-container').empty();
 			$.each(quickReplies, function(index, quickReply) {
-				$quickReplies.append('<div class="jsm-quick-reply-option" style="transition-delay: ' + (index * 0.1).toFixed(1) + 's">' + quickReply + '</div>');
+				$quickReplies.append('<div class="jsm-quick-reply-option" style="transition-delay: ' + (index * 0.1 * timeScale).toFixed(1) + 's">' + quickReply + '</div>');
 			});
 			$element.find('.jsm-quick-replies').removeClass('jsm-hide').prop('scrollLeft', 0);
 			// Trigger transition to let the options appear
@@ -409,7 +411,7 @@
 				that._scrollDown();
 				// must be deferred to trigger proper transition
 				$element.find('.jsm-quick-reply-option').addClass('jsm-show');
-			}, 10);
+			}, 10 * timeScale);
 			this.options.state.quickRepliesDisplayed = true;
 		} else {
 			this.options.script.push({
@@ -459,6 +461,7 @@
 			var $element = this.$element;
 			var that = this;
 			var $option = $element.find('.jsm-quick-reply-option:nth-child(' + (quickReplyIndex + 1) + ')').addClass('jsm-selected');
+			var timeScale = this.options.timeScale;
 			setTimeout(function() {
 				$element.find('.jsm-quick-reply-option').removeClass('jsm-show');
 				setTimeout(function() {
@@ -466,9 +469,9 @@
 					var $message = $element.find('.jsm-chat-message:last');
 					setTimeout(function() {
 						$message.removeClass('jsm-quickreply');
-					}, 100);
-				}, 100);
-			}, 500);
+					}, 100 * timeScale);
+				}, 100 * timeScale);
+			}, 500 * timeScale);
 			// Hide quick reply options
 			setTimeout(function() {
 				$element.find('.jsm-quick-replies').animate({
@@ -477,7 +480,7 @@
 					that.options.state.quickRepliesDisplayed = false;
 					$(this).addClass('jsm-hide').css('height', '');
 				});
-			}, 500 + 100 + 100);
+			}, (500 + 100 + 100) * timeScale);
 		} else {
 			this.options.script.push({
 				method: 'selectQuickReply',
@@ -514,7 +517,7 @@
 			var $button = this.$element.find('.jsm-chat-content .jsm-button-template:last .jsm-button:nth-child(' + (buttonIndex + 1) + ')').addClass('jsm-selected');
 			setTimeout(function() {
 				$button.removeClass('jsm-selected');
-			}, 1500);
+			}, 1500 * this.options.timeScale);
 			this.message(this.options.rightUser, $button.text(), { timestamp: false });
 		} else {
 			this.options.script.push({
@@ -569,7 +572,7 @@
 			$scroller.find('.jsm-generic-template:nth-child(' + (itemIndex + 1) + ')').addClass('jsm-selected');
 			$scroller.animate({
 				scrollLeft: itemIndex * width
-			}, 250);
+			}, 250 * this.options.timeScale);
 		} else {
 			this.options.script.push({
 				method: 'scrollGenericTemplate',
@@ -586,7 +589,7 @@
 			var $button = this.$element.find('.jsm-generic-template-wrapper:last .jsm-generic-template.jsm-selected .jsm-button:eq(' + buttonIndex + ')').addClass('jsm-selected');
 			setTimeout(function() {
 				$button.removeClass('jsm-selected');
-			}, 1500);
+			}, 1500 * this.options.timeScale);
 			this.message(this.options.rightUser, $button.text(), { timestamp: false });
 		} else {
 			this.options.script.push({
@@ -612,7 +615,7 @@
 				setTimeout(function() {
 					Plugin.prototype[item.method].apply(that, item.args);
 					schedule(index + 1);
-				}, item.delay);
+				}, item.delay * that.options.timeScale);
 			}
 		};
 		schedule(0);
