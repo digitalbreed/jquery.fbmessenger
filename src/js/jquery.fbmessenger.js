@@ -492,11 +492,11 @@
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			this._checkQuickReply(false);
-			var template = '<div class="jsm-chat-message jsm-left jsm-button-template"><div class="jsm-header">' + text + '</div>';
+			var template = '<div class="jsm-chat-message jsm-left jsm-button-template"><div class="jsm-header">' + text + '</div><div class="jsm-buttons">';
 			$.each(buttons, function(index, button) {
 				template += '<div class="jsm-button">' + button + '</div>';
 			});
-			template += '</div>';
+			template += '</div></div>';
 			this._addNewContent(this.options.leftUser, $(template), options.timestamp);
 		} else {
 			this.options.script.push({
@@ -511,7 +511,7 @@
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			this._checkQuickReply(false);
-			var $button = this.$element.find('.jsm-chat-content .jsm-button-template:last .jsm-button:nth-child(' + (buttonIndex + 1) + ')').addClass('jsm-selected');
+			var $button = this.$element.find('.jsm-chat-content .jsm-button-template:last .jsm-buttons .jsm-button:nth-child(' + (buttonIndex + 1) + ')').addClass('jsm-selected');
 			setTimeout(function() {
 				$button.removeClass('jsm-selected');
 			}, 1500);

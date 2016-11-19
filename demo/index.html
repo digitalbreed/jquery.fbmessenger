@@ -128,6 +128,7 @@
 						'Acquaintance or colleague',
 						'Business partner'
 					], { timestamp: now, delay: 1000})
+					.fbMessenger('selectButtonTemplate', 0, { timestamp: now, delay: 1000 })
 
 					.fbMessenger('message', 'user', 'One more time!', { timestamp: now, delay: 5000 })
 					.fbMessenger('run');
