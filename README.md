@@ -142,7 +142,7 @@ Better don't hold your breath for these ones. If you're in need of one of those,
 * "Browser"
 * Receipt template support
 * Image/audio/file attachments
-* Build an editor around it and allow exporting a HTML file, for people without any coding experience
+* ~~Build an editor around it and allow exporting a HTML file, for people without any coding experience~~ (available since 2016-11-28, try [BotPreview.com (Beta)](https://botpreview.com) to create a fake bot interaction with an easy to use graphical editor)
 * Airline templates (least priority, as they need lots of customization for very specific use cases)
 
 ## Troubleshooting
