@@ -23,6 +23,7 @@
 		scrollTimeMs: 500,
 		timeScale: 1.0,
 		loop: true,
+		locale: 'en',
 		dateFormat: function(date) {
 			var pad = function(val) {
 				var str = '' + val;
@@ -41,6 +42,64 @@
 			quickRepliesDisplayed: false
 		}
 	};
+	var TRANSLATIONS = {
+		en: {
+			navBack: 'Home',
+			navOptions: 'Manage',
+			thousands: 'k',
+			millions: 'M',
+			responseTime: 'Replies instantly',
+			likes: '$LIKES people like this',
+			likesWithFriend: '$LIKES people like this including $FRIENDNAME',
+			likesWithFriendAndCount: '$LIKES people like this including $FRIENDNAME and $FRIENDCOUNT friends',
+			likesWithCount: '$LIKES people like this including $FRIENDCOUNT friends',
+			getStartedWarning: 'When you tap Get Started, $BOTNAME will see your public info.',
+			getStartedButton: 'Get Started',
+			inputPlaceholder: 'Type a message&hellip;'
+		},
+		de: {
+			navBack: 'Startseite',
+			navOptions: 'Verwalten',
+			thousands: 'K',
+			millions: 'M',
+			responseTime: 'Antwortet sofort',
+			likes: '$LIKES Personen gefällt das',
+			likesWithFriend: '$LIKES Personen und $FRIENDNAME gefällt das',
+			likesWithFriendAndCount: '$LIKES Personen und $FRIENDNAME und $FRIENDCOUNT weiteren Freunden gefällt das',
+			likesWithCount: '$LIKES Personen und $FRIENDCOUNT weiteren Freunden gefällt das',
+			getStartedWarning: 'Wenn du auf „Los geht\'s” tippst, sieht $BOTNAME deine öffentlichen Informationen.',
+			getStartedButton: 'Los geht\'s',
+			inputPlaceholder: 'Verfasse eine Nachricht&hellip;'
+		},
+		tr: {
+			navBack: 'Ana Sayfa',
+			navOptions: 'Yönet',
+			thousands: 'k',
+			millions: 'M',
+			responseTime: 'Hemen yanıt',
+			likes: '$LIKES kişi bunu beğendi',
+			likesWithFriend: '$FRIENDNAME dahil $LIKES kişi bunu beğendi',
+			likesWithFriendAndCount: '$FRIENDNAME ve $FRIENDCOUNT arkadaşin dahil $LIKES kişi bunu beğendi',
+			likesWithCount: '$FRIENDCOUNT arkadaşin dahil $LIKES kişi bunu beğendi',
+			getStartedWarning: 'Başla\'e dokunduğunda, $BOTNAME senin herkese açık bilgilerini görecektir',
+			getStartedButton: 'Başla',
+			inputPlaceholder: 'Bir ileti oluşturun&hellip;'
+		},
+		dk: {
+			navBack: 'Startside',
+			navOptions: 'Administrer',
+			thousands: 'k',
+			millions: 'M',
+			responseTime: 'Reagere umiddelbart',
+			likes: '$LIKES personer synes godt om dette',
+			likesWithFriend: '$LIKES personer synes godt om dette, herunder $FRIENDNAME',
+			likesWithFriendAndCount: '$LIKES personer synes godt om dette, herunder $FRIENDNAME og $FRIENDCOUNT andre venner',
+			likesWithCount: '$LIKES personer synes godt om dette, herunder $FRIENDCOUNT venner',
+			getStartedWarning: 'Når du trykker på Kom i gang, kan $BOTNAME se dine offentlige oplysninger.',
+			getStartedButton: 'Kom i gang',
+			inputPlaceholder: 'Skriv en besked&hellip;'
+		}
+	};
 
 	function Plugin(element, options) {
 		this.element = element;
@@ -49,29 +108,49 @@
 		this.init();
 	}
 
+	Plugin.prototype._likeCount = function() {
+		var totalCount = this.options.likes ? this.options.likes.totalCount : undefined;
+		var text;
+		if (totalCount === undefined) {
+			text = '25' + this._localize('thousands');
+		} else {
+			text = totalCount > 999 ? (totalCount / 1000).toFixed(1) + this._localize('thousands') : totalCount;
+		}
+		return text;
+	}
+
 	Plugin.prototype._likeText = function(short) {
 		if (typeof this.options.likeTextFn === 'function') {
 			return this.options.likeTextFn(short);
 		} else {
-			var totalCount = this.options.likes ? this.options.likes.totalCount : undefined;
-			var text;
-			if (totalCount === undefined) {
-				text = '25K';
-			} else {
-				text = totalCount > 999 ? (totalCount / 1000).toFixed(1) + 'K' : totalCount;
-			}
-			text = text + ' people like this';
+			var key = 'likes';
 			if (!short && this.options.likes) {
 				if (this.options.likes.friendName && this.options.likes.otherFriendsCount) {
-					text = text + ' including ' + this.options.likes.friendName + ' and ' + this.options.likes.otherFriendsCount + ' friends';
+					key = 'likesWithFriendAndCount';
 				} else if (this.options.likes.friendName) {
-					text = text + ' including ' + this.options.likes.friendName;
+					key = 'likesWithFriend';
 				} else if (this.options.likes.otherFriendsCount) {
-					text = text + ' including ' + this.options.likes.otherFriendsCount + ' friends';
+					key = 'likesWithCount';
 				}
 			}
-			return text;
+			return this._localize(key);
 		}
+	}
+
+	Plugin.prototype._localize = function(key) {
+		if (key === 'likeTextShort') {
+			return this._likeText(true);
+		} else if (key === 'likeTextLong') {
+			return this._likeText(false);
+		}
+		var text = TRANSLATIONS[this.options.locale][key];
+		if (text.indexOf('$') > -1) {
+			text = text.replace(/\$LIKES/g, this._likeCount());
+			text = text.replace(/\$FRIENDNAME/g, this.options.likes && this.options.likes.friendName ? this.options.likes.friendName : '');
+			text = text.replace(/\$FRIENDCOUNT/g, this.options.likes && this.options.likes.otherFriendsCount ? this.options.likes.otherFriendsCount : '0');
+			text = text.replace(/\$BOTNAME/g, this.options.botName);
+		}
+		return text;
 	}
 
 	Plugin.prototype.init = function() {
@@ -90,20 +169,20 @@
 						</div>\
 						<div class="jsm-battery">\
 							<span class="jsm-battery-percent">51 %</span>\
-							<img class="jsm-battery-image"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAATCAYAAAA5+OUhAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AgTFgId4dfTCwAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAw0lEQVRIx93XsQ5BMRgF4I/IvYPEC1hNJoPXMJokFgZvYrZ4CV7AC5hYSDyGRQwkwtKBy3hvoj3JSZr/b9pz2qbtDxnG2OP5x9wHnVmRDQwxwwQn/4sulnhgVUweQod5BauXlcxu0PsRr4XJclxCsEzkFezIrThu/a2diRR1CSBmE2es0W5EbKKJAVopHKd+CiaaKZi4pmBiF7uJDaYx3055so/dPWYTR3SwiEBvJ+j9wghb9Cr4OpfJXtA5+pGLv7J7ATA1fYuDT5NBAAAAAElFTkSuQmCC">\
+							<img class="jsm-battery-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAATCAYAAAA5+OUhAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AgTFgId4dfTCwAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAw0lEQVRIx93XsQ5BMRgF4I/IvYPEC1hNJoPXMJokFgZvYrZ4CV7AC5hYSDyGRQwkwtKBy3hvoj3JSZr/b9pz2qbtDxnG2OP5x9wHnVmRDQwxwwQn/4sulnhgVUweQod5BauXlcxu0PsRr4XJclxCsEzkFezIrThu/a2diRR1CSBmE2es0W5EbKKJAVopHKd+CiaaKZi4pmBiF7uJDaYx3055so/dPWYTR3SwiEBvJ+j9wghb9Cr4OpfJXtA5+pGLv7J7ATA1fYuDT5NBAAAAAElFTkSuQmCC">\
 						</div>\
 						<div class="jsm-clock">' + this.options.displayedTime + '</div>\
 					</div>\
 					<div class="jsm-nav-left">\
 						<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAqCAYAAACtMEtjAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AgVFDEPwOpMwQAAAtBJREFUWMO110tIFVEcx/HvmTshZqa9EAXLUnxcymcJarnxUWlYWS5qES56QC3LIBxbOHeTrYMeiyJoIWUZlkkq9jAixdf1qmgS9EJCBKM2wdw7LUTSdObqzNyzPDOXz/0ffufM+UMohqq1owbeLZySQoB0IVzFCJGPqr2enxaOIvWBbiRRsGhO93dQJ5c4B3kCH0DkLvtM97e6HEL6QOw2fC7EL+EAMgQi3fgFvR9FyrEehqSkMDyBkSDIAIqUYz11eVXhVE94QbiDINnWU5dXFU554zCIRBNkEEXKsr6PSi9FUN44ulpkdRVVXIskt2YERLwJMoQiZS4bvBUhVbeiyDwzii7irCArg04+2ID7xBiIGKtIcOjU400kHxkDscUE8aJIGcH+rzF0uiOGhCIfsNkuYgydfRPL1n0+YKMJMowipa80S0uh8z3xxO3xAtFOIUuhC/3biM3yAuudRBZDNcOJRO8cQCfSBPGhSLusnFpz0JWxZNal9qMTEQoEQObiRzcRSb3orA0VMnfWhQkJEWQ/BQLjdj9bc8DlTylEbe8zXbqAv4mr8nHrFQE07Bhn1pcB/DZ+03UMVWuyV9Gq4u1/giJXWqtoftzI/sy3925g1vgnrqN4tGZ7EMDN/O98eetGMGOCHUbVntqDAG4XTjH5Ig30aeNFd1Wgai32IIC7ZdNMNKeB/sMEO4RHe2YPArhfOcPQnRTQp0yWsRxVe24PAnh47ic911NA/2pSWRkerdX6F/b/G1Bhgw9EgvFJ5W+jTj5oD/p3p/OCSDLBXlIn77cHzV+FqycGQaSabOp2FLnUXiM2OfmHe8mZoPtMAlKCqrXbq2hpu5JtUlknilxsv7VUpBzQe0wqK0LVOp1rLVWtG+EqMAnIK2ea5Tp5L/i7jCFpjbPNskdrA9fiaAu9l1op19n2X5EPgL9lUTNWK+USslGvPcIT8C6c+gtjuOq4cXN0IAAAAABJRU5ErkJggg==">\
-						Home\
+						<span data-jsm-loc="navBack">' + this._localize('navBack') + '</span>\
 					</div>\
 					<div class="jsm-nav-title">\
 						<div class="jsm-nav-title-bot-name">' + this.options.botName + '</div>\
-						<div class="jsm-nav-title-replies-in">Typically replies in minutes</div>\
+						<div class="jsm-nav-title-replies-in" data-jsm-loc="responseTime">' + TRANSLATIONS[this.options.locale].responseTime + '</div>\
 					</div>\
 					<div class="jsm-nav-right">\
-						Manage\
+						<span data-jsm-loc="navOptions">' + this._localize('navOptions') + '</span>\
 					</div>\
 				</div>\
 				<div class="jsm-chat-content-wrapper"><div class="jsm-chat-content-wrapper-2">\
@@ -119,12 +198,12 @@
 						</div>\
 						<h1>' + this.options.botName + '</h1>\
 						<h2>' + this.options.botCategory + '</h2>\
-						<p>' + this._likeText(false) + '</p>\
+						<p data-jsm-loc="likeTextLong">' + this._likeText(false) + '</p>\
 						<div class="jsm-bot-welcome-status">\
 							<div class="jsm-bot-welcome-status-svg-wrapper">\
 								<svg viewBox="0 0 50 50"><path d="M24.22 1A23.219 21.268 0 0 0 1 22.27a23.219 21.268 0 0 0 8.597 16.5l-.767 7.994 7.13-4.643a23.219 21.268 0 0 0 8.26 1.416A23.219 21.268 0 0 0 47.44 22.27 23.219 21.268 0 0 0 24.22 1z" fill-rule="evenodd" stroke="#007aff" stroke-width="2" fill="#fff"/></svg>\
 							</div>\
-							<p>Typically replies in minutes</p>\
+							<p data-jsm-loc="responseTime">' + this._localize('responseTime') + '</p>\
 						</div>\
 						<div class="jsm-bot-welcome-status">\
 							<div class="jsm-bot-welcome-status-svg-wrapper">\
@@ -136,7 +215,7 @@
 					<div class="jsm-bot-info">\
 						<img src="' + this.options.botLogoUrl + '">\
 						<div class="jsm-bot-info-name">' + this.options.botName + '</div>\
-						<div class="jsm-bot-info-likes">' + this._likeText(true) + '</div>\
+						<div class="jsm-bot-info-likes" data-jsm-loc="likeTextShort">' + this._likeText(true) + '</div>\
 						<div class="jsm-bot-info-category">' + this.options.botCategory + '</div>\
 					</div>\
 				</div>\
@@ -147,12 +226,12 @@
 						</div>\
 					</div>\
 					<div class="jsm-get-started">\
-						<p class="jsm-get-started-info">When you tap Get Started, ' + this.options.botName + ' will see your public info.</p>\
-						<div class="jsm-get-started-button">Get Started</div>\
+						<p class="jsm-get-started-info" data-jsm-loc="getStartedWarning">' + this._localize('getStartedWarning') + '</p>\
+						<div class="jsm-get-started-button" data-jsm-loc="getStartedButton">' + this._localize('getStartedButton') + '</div>\
 					</div>\
 					<div class="jsm-input-message jsm-hide">\
 						<img class="jsm-persistent-menu" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAaCAYAAADbhS54AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AgUFCEdwS1IvQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAARklEQVRIx+3VQQ0AIBADwZagDl0gCewVEzwuZKtg0s9aM1vSUK2dpoqz4iQlbTUfAwYMGLAPYN1LtJJWAgMGDBgwWvmulRdvjBDe+GiHkQAAAABJRU5ErkJggg==">\
-						Type a message&hellip;\
+						<span data-jsm-loc="inputPlaceholder">' + this._localize('inputPlaceholder') + '</span>\
 					</div>\
 				</div>\
 			</div>\
@@ -622,6 +701,14 @@
 				delay: options.delay
 			});
 		}
+	}
+
+	Plugin.prototype.setLocale = function(locale) {
+		this.options.locale = locale;
+		var that = this;
+		this.$element.find('[data-jsm-loc]').each(function() {
+			$(this).html(that._localize($(this).attr('data-jsm-loc')));
+		});
 	}
 
 	Plugin.prototype.run = function() {
