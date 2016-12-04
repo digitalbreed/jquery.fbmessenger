@@ -117,6 +117,8 @@ The `options` parameter is optional and may contain an attribute `delay`. If `de
 | `scrollTimeMs` | Time in milliseconds the left user's icon needs to move to the latest message in a series of subsequent messages (default `500`).
 | `dateFormat` | `function` which takes the current date as a parameter and returns the formatted timestamp as a string.
 | `loop` | Boolean indicating whether the run script should restart from the beginning once it is finished (default `true`).
+| `stepCallback` | Function to be invoked after every step during playback; receives the current index as a parameter.
+| `endCallback` | Function to be invoked after all steps are finished.
 | `script` | Array of steps to execute for scheduled execution.
 
 ## Roadmap

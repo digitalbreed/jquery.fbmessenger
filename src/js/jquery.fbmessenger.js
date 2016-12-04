@@ -491,10 +491,38 @@
 		return this;
 	}
 
+	Plugin.prototype.hideQuickReplies = function(options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkQuickReply(true);
+			var $element = this.$element;
+			var numOptions = $element.find('.jsm-quick-reply-option').length;
+			var that = this;
+			var timeScale = this.options.timeScale;
+			// Hide options
+			$element.find('.jsm-quick-reply-option').removeClass('jsm-show');
+			// Hide container
+			setTimeout(function() {
+				$element.find('.jsm-quick-replies').animate({
+					height: 0
+				}, 100 * timeScale, function() {
+					that.options.state.quickRepliesDisplayed = false;
+					$(this).addClass('jsm-hide').css('height', '');
+				});
+			}, numOptions * 100 * timeScale);
+		} else {
+			this.options.script.push({
+				method: 'hideQuickReplies',
+				args: [ this._clearOptions(options) ],
+				delay: options.delay
+			});
+		}
+		return this;
+	}
+
 	Plugin.prototype.showButtonTemplate = function(text, buttons, options) {
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
-			this._checkQuickReply(false);
 			var template = '<div class="jsm-chat-message jsm-left jsm-button-template"><div class="jsm-header">' + text + '</div><div class="jsm-buttons">';
 			$.each(buttons, function(index, button) {
 				template += '<div class="jsm-button">' + button + '</div>';
@@ -513,7 +541,6 @@
 	Plugin.prototype.selectButtonTemplate = function(buttonIndex, options) {
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
-			this._checkQuickReply(false);
 			var $button = this.$element.find('.jsm-chat-content .jsm-button-template:last .jsm-buttons .jsm-button:nth-child(' + (buttonIndex + 1) + ')').addClass('jsm-selected');
 			setTimeout(function() {
 				$button.removeClass('jsm-selected');
@@ -531,7 +558,6 @@
 	Plugin.prototype.showGenericTemplate = function(items, options) {
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
-			this._checkQuickReply(false);
 			var template = '<div class="jsm-chat-message jsm-left jsm-generic-template-wrapper"><div class="jsm-generic-template-background">';
 			$.each(items, function(index, item) {
 				template += '<div class="jsm-generic-template ' + (index === 0 ? 'jsm-selected' : '') + '">';
@@ -565,7 +591,6 @@
 	Plugin.prototype.scrollGenericTemplate = function(itemIndex, options) {
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
-			this._checkQuickReply(false);
 			var $scroller = this.$element.find('.jsm-generic-template-wrapper:last');
 			var width = $scroller.find('.jsm-generic-template:first').outerWidth(true) + 2;
 			$scroller.find('.jsm-generic-template').removeClass('jsm-selected');
@@ -585,7 +610,6 @@
 	Plugin.prototype.selectGenericTemplate = function(buttonIndex, options) {
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
-			this._checkQuickReply(false);
 			var $button = this.$element.find('.jsm-generic-template-wrapper:last .jsm-generic-template.jsm-selected .jsm-button:eq(' + buttonIndex + ')').addClass('jsm-selected');
 			setTimeout(function() {
 				$button.removeClass('jsm-selected');
@@ -606,14 +630,22 @@
 		}
 		var that = this;
 		var schedule = function(index) {
-			if (index > that.options.script.length - 1 && that.options.loop) {
-				that.reset();
-				index = 0;
+			if (index > that.options.script.length - 1) {
+				if (typeof that.options.endCallback === 'function') {
+					that.options.endCallback();
+				}
+				if (that.options.loop) {
+					that.reset();
+					index = 0;
+				}
 			}
 			var item = that.options.script[index];
 			if (item) {
 				setTimeout(function() {
 					Plugin.prototype[item.method].apply(that, item.args);
+					if (typeof that.options.stepCallback === 'function') {
+						that.options.stepCallback(index);
+					}
 					schedule(index + 1);
 				}, item.delay * that.options.timeScale);
 			}
