@@ -179,7 +179,7 @@
 					</div>\
 					<div class="jsm-nav-title">\
 						<div class="jsm-nav-title-bot-name">' + this.options.botName + '</div>\
-						<div class="jsm-nav-title-replies-in" data-jsm-loc="responseTime">' + TRANSLATIONS[this.options.locale].responseTime + '</div>\
+						<div class="jsm-nav-title-replies-in" data-jsm-loc="responseTime">' + this._localize('responseTime') + '</div>\
 					</div>\
 					<div class="jsm-nav-right">\
 						<span data-jsm-loc="navOptions">' + this._localize('navOptions') + '</span>\
@@ -701,6 +701,30 @@
 				delay: options.delay
 			});
 		}
+	}
+
+	Plugin.prototype.imageAttachment = function(user, imageUrl, options) {
+		if (options === undefined || options.delay === undefined) {
+			this._checkWelcomeMessage();
+			this._checkUser(user);
+			var sideClass = user === this.options.leftUser ? 'jsm-left' : user === this.options.rightUser ? 'jsm-right' : '';
+			var $content = $('<div class="jsm-chat-message jsm-image-attachment ' +
+								sideClass +
+								' '+
+								(options.className || '') +
+								'"><div class="jsm-image" style="background-image: url(\'' + imageUrl + '\')"></div>' +
+								'<div class="jsm-share"><svg viewBox="0 0 30.866915 40.470369"><g stroke="#ccc" stroke-width="2" fill="none"><path d="M6.58 9.49L15.125.714l8.776 8.776M15.13.72v27.252"/><path d="M.44 17.71v18.943c0 2.446 1.36 3.378 3.05 3.378h23.886c1.69 0 3.049-.932 3.049-3.378V17.71" stroke-width="2"/></g></svg></div>' +
+								'</div>'
+							);
+			this._addNewContent(user, $content, options.timestamp);
+		} else {
+			this.options.script.push({
+				method: 'imageAttachment',
+				args: [ user, imageUrl, this._clearOptions(options) ],
+				delay: options.delay
+			});
+		}
+		return this;
 	}
 
 	Plugin.prototype.setLocale = function(locale) {

@@ -502,6 +502,79 @@ $message-bubble-padding: 0.6em 1em;
 	}
 
 	/**
+		Image attachments
+	*/
+	.jsm-chat-message.jsm-image-attachment {
+		padding: 0;
+		border: none;
+		background: #fff;
+		position: relative;
+		width: 100%;
+
+		.jsm-image {
+			border-radius: 1.5em;
+			width: 100%;
+			height: auto;
+			background-repeat: no-repeat;
+			background-position: 50% 50%;
+			background-size: cover;
+			border: 1px solid rgba(255, 255, 255, 0.25); /** FIXME why are left and right borders cut off? */
+
+			&:after {
+				padding-top: 52.35%;
+				display: block;
+				content: '';
+			}
+		}
+
+		&.jsm-left {
+			&.jsm-has-previous {
+				.jsm-image {
+					border-top-left-radius: 0.25em;
+				}
+			}
+			&.jsm-has-next {
+				.jsm-image {
+					border-bottom-left-radius: 0.25em;
+				}
+			}
+		}
+		&.jsm-right {
+			&.jsm-has-previous {
+				.jsm-image {
+					border-top-right-radius: 0.25em;
+				}
+			}
+			&.jsm-has-next {
+				.jsm-image {
+					border-bottom-right-radius: 0.25em;
+				}
+			}
+		}
+
+		.jsm-share {
+			position: absolute;
+			top: 50%;
+			margin-top: -0.75em;
+
+			svg {
+				width: 1.5em;
+				height: 1.5em;
+			}
+		}
+		&.jsm-left {
+			.jsm-share {
+				right: -2.15em;
+			}
+		}
+		&.jsm-right {
+			.jsm-share {
+				left: -2.15em;
+			}
+		}
+	}
+
+	/**
 		Additional message bubble class for the left user's typing indicator.
 	*/
 	.jsm-typing-indicator {
