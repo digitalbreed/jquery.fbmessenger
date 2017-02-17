@@ -2,7 +2,7 @@
  * jQuery.fbMessenger
  * Simulates interaction with a Facebook Messenger bot on an iPhone
  *
- * Version: 0.0.7
+ * Version: 0.0.8
  * Author: Matthias Gall <matthias.gall@digitalbreed.com>
  * Copyright (c) by Matthias Gall 2016, all rights reserved.
  *
