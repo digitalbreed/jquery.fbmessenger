@@ -2,7 +2,7 @@
  * jQuery.fbMessenger
  * Simulates interaction with a Facebook Messenger bot on an iPhone
  *
- * Version: 0.0.6
+ * Version: 0.0.7
  * Author: Matthias Gall <matthias.gall@digitalbreed.com>
  * Copyright (c) by Matthias Gall 2016, all rights reserved.
  *
@@ -24,12 +24,10 @@
 		timeScale: 1.0,
 		loop: true,
 		locale: 'en',
+		annotationClass: 'jsm-annotation-default',
 		dateFormat: function(date) {
 			var pad = function(val) {
-				var str = '' + val;
-				if (str.length < 2) {
-					str = '00' + str;
-				}
+				var str = '00' + val;
 				return str.substring(str.length - 2);
 			}
 			var month = ['JAN.', 'FEB.', 'MAR.', 'APR.', 'MAY', 'JUN.', 'JUL.', 'AUG.', 'SEP.', 'OCT.', 'NOV.', 'DEC.'];
@@ -235,6 +233,7 @@
 					</div>\
 				</div>\
 			</div>\
+			<div class="jsm-annotation-container"></div>\
 			</div>\
 		');
 
@@ -727,6 +726,42 @@
 		return this;
 	}
 
+	Plugin.prototype.annotate = function(annotation, options, index) {
+		if (options === undefined || options.delay === undefined) {
+			var $last = this.$element.find('.jsm-chat-row:last .jsm-chat-message');
+			var posY = $last.offset().top - this.$element.offset().top;
+			var posX = $last.offset().left - this.$element.offset().left;
+			var $annotation = $('<div class="jsm-annotation ' +
+					this.options.annotationClass + ' ' +
+					($last.hasClass('jsm-left') ? 'jsm-annotation-left' : 'jsm-annotation-right') +
+					'">' + annotation + '</div>'
+				);
+			this.$element.find('.jsm-annotation-container').empty().append($annotation);
+						$annotation.css('top', posY - $annotation.outerHeight() - 20);
+			$annotation.addClass('jsm-annotation-top'); // TODO is there a case where the annotation does not fit above?
+			$annotation.css('left', Math.max(0, posX - $annotation.outerWidth()));
+
+			var next = this.options.script[(index + 1) % this.options.script.length];
+			var displayTime = 2000;
+			if (next && next.delay) {
+				displayTime = Math.max(0, next.delay - 200);
+			}
+			setTimeout(function() {
+				var $newAnnotation = $annotation.clone(true);
+				$newAnnotation.addClass('fade-out');
+				$annotation.before($newAnnotation);
+				$annotation.remove();
+			}, displayTime);
+		} else {
+			this.options.script.push({
+				method: 'annotate',
+				args: [ annotation, this._clearOptions(options) ],
+				delay: options.delay
+			});
+		}
+		return this;
+	}
+
 	Plugin.prototype.setLocale = function(locale) {
 		this.options.locale = locale;
 		var that = this;
@@ -753,7 +788,8 @@
 			var item = that.options.script[index];
 			if (item) {
 				setTimeout(function() {
-					Plugin.prototype[item.method].apply(that, item.args);
+					var args = item.args.concat([index]);
+					Plugin.prototype[item.method].apply(that, args);
 					if (typeof that.options.stepCallback === 'function') {
 						that.options.stepCallback(index);
 					}

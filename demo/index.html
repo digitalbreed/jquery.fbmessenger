@@ -68,8 +68,31 @@
 						},
 						loop: false
 					})
-					.fbMessenger('start', { delay: 4000 } )
-					.fbMessenger('message', 'user', 'Get Started', { timestamp: now, delay: 250 })
+					.fbMessenger('start', { delay: 0 } )
+					.fbMessenger('message', 'user', 'Get Started', { timestamp: now, delay: 0 })
+					.fbMessenger('message', 'bot', 'Get Started', { timestamp: now, delay: 0 })
+					.fbMessenger('message', 'bot', 'Get Started', { timestamp: now, delay: 0 })
+					.fbMessenger('message', 'bot', 'Get Started', { timestamp: now, delay: 0 })
+					.fbMessenger('message', 'bot', 'Get Started', { timestamp: now, delay: 0 })
+					.fbMessenger('message', 'bot', 'Get Started', { timestamp: now, delay: 0 })
+					.fbMessenger('message', 'bot', 'Get Started', { timestamp: now, delay: 0 })
+					.fbMessenger('message', 'bot', 'Get Started', { timestamp: now, delay: 0 })
+					.fbMessenger('message', 'user', 'Get Started', { timestamp: now, delay: 0 })
+
+					.fbMessenger('annotate', 'Hello World!', { delay: 0 })
+					/*
+					.fbMessenger('message', 'user', 'Foo', { timestamp: now, delay: 2000 })
+					.fbMessenger('annotate', 'Hello World! This is a really long annotation and I am wondering how this will turn out to look like.', { delay: 0 })
+					.fbMessenger('message', 'user', 'Foo', { timestamp: now, delay: 2000 })
+					.fbMessenger('annotate', 'Hello World! This is a really long annotation and I am wondering how this will turn out to look like.', { delay: 0 })
+					.fbMessenger('message', 'user', 'Foo', { timestamp: now, delay: 2000 })
+					.fbMessenger('annotate', 'Hello World! This is a really long annotation and I am wondering how this will turn out to look like.', { delay: 0 })
+					.fbMessenger('message', 'user', 'Foo', { timestamp: now, delay: 2000 })
+					.fbMessenger('annotate', 'Hello World! This is a really long annotation and I am wondering how this will turn out to look like.', { delay: 0 })
+					.fbMessenger('message', 'user', 'Foo', { timestamp: now, delay: 2000 })
+					.fbMessenger('annotate', 'Hello World! This is a really long annotation and I am wondering how this will turn out to look like.', { delay: 0 })
+
+					/*
 					.fbMessenger('typingIndicator', { delay: 500 })
 					.fbMessenger('message', 'bot', 'Hey there! I am Present Finder, your friendly bot to help you finding... well, you guessed it.', { timestamp: now, delay: 2000 })
 					.fbMessenger('typingIndicator', { delay: 3000 })
@@ -130,6 +153,7 @@
 					], { timestamp: now, delay: 1000})
 
 					.fbMessenger('message', 'user', 'One more time!', { timestamp: now, delay: 5000 })
+					*/
 					.fbMessenger('run');
 			});
 		</script>

@@ -95,6 +95,7 @@ Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your 
 | `('showGenericTemplate', templates, options)` | Shows a generic template with the given items, where `templates` is an array of objects `{ imageUrl: '...', title: '...', subtitle: '...', buttons: [ ... ] }` (see usage example).
 | `('scrollGenericTemplate', templateIndex, options)` | Scrolls the generic template item with the given index into view.
 | `('selectGenericTemplate', buttonIndex, options)` | Selects the button with the given `buttonIndex` on the generic template item which is currently in view.
+| `('annotation', text, options)` | Shows an annotation with the given text. Note that this is not a Messenger feature, but intended to support explaining the flow of a conversation.
 | `('run')` | Executes the previously scheduled steps.
 
 The `options` parameter is optional and may contain an attribute `delay`. If `delay` is provided, execution is halted until `run` is called and every step is delayed `delay` milliseconds to the previous step. If it's not provided, the corresponding action is executed immediately.
@@ -119,6 +120,7 @@ The `options` parameter is optional and may contain an attribute `delay`. If `de
 | `loop` | Boolean indicating whether the run script should restart from the beginning once it is finished (default `true`).
 | `stepCallback` | Function to be invoked after every step during playback; receives the current index as a parameter.
 | `endCallback` | Function to be invoked after all steps are finished.
+| `annotationClass` | Class name to style annotations (default `jsm-annotation-default`).
 | `script` | Array of steps to execute for scheduled execution.
 
 ## Roadmap
@@ -128,9 +130,9 @@ The `options` parameter is optional and may contain an attribute `delay`. If `de
 I plan to work on these items very soon. If you need one of those to put jQuery.fbMessenger to good use, check back in a few days.
 
 * Style updates (ongoing)
+* Localization (ongoing)
 * Fake location quick reply / sending
 * Fake keyboard input
-* Localization
 * ~~Message sent / received / last read indicator~~ (available since v0.0.7 2016-10-20)
 * ~~Generic template support~~ (available since v0.0.4 2016-08-28)
 * ~~Button template support~~ (available since v0.0.3 2016-08-23)

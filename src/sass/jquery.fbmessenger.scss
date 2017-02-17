@@ -59,6 +59,82 @@ $message-bubble-padding: 0.6em 1em;
 }
 
 /**
+	Annotations
+*/
+
+.jsm-annotation-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	//background: rgba(255,255,255,0.5);
+	z-index: 50;
+	font-family: 'San Francisco', 'Helvetica Neue', Helvetica, sans-serif;
+	font-size: 120%;
+
+	.jsm-annotation {
+		position: absolute;
+		max-width: 80%;
+		margin: 0 10%;
+	}
+
+	/** Default annotation styling */
+
+	.jsm-annotation.jsm-annotation-default {
+		background: #FF495C;
+		color: #fff;
+		border-radius: 0.25em;
+		padding: 1em;
+		text-align: left;
+		line-height: 1.5em;
+		animation: pop-in 200ms;
+		animation-fill-mode: forwards;
+
+		&.fade-out {
+			animation-direction: reverse;
+		}
+
+		&.jsm-annotation-right.jsm-annotation-top:after {
+			content: '';
+			position: absolute;
+			bottom: -19px;
+			right: 2em;
+			border-width: 0 20px 20px 0;
+			border-style: solid;
+			border-color: transparent #ff495c;
+			display: block;
+			width: 0;
+		}
+		&.jsm-annotation-left.jsm-annotation-top:after {
+			content: '';
+			position: absolute;
+			bottom: -19px;
+			left: 2em;
+			border-width: 0 0 20px 20px;
+			border-style: solid;
+			border-color: transparent #ff495c;
+			display: block;
+			width: 0;
+		}
+
+	}
+}
+@keyframes pop-in {
+	0% {
+		transform: scale(1);
+		opacity: 0;
+	}
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+    	transform: scale(1);
+    	opacity: 1;
+    }
+}
+
+/**
 	Combined status and navigation bar
 */
 .jsm-status-navbar {
