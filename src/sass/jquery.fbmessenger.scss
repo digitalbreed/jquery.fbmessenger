@@ -295,18 +295,105 @@ $message-bubble-padding: 0.6em 1em;
 	.jsm-input-message {
 		border-top: 1px solid $jsm-very-light-gray;
 		font-size: 150%;
-		text-align: center;
 		line-height: 2.5em;
 		color: $jsm-light-gray;
 		position: relative;
+		background: #fafafa;
 
-		.jsm-persistent-menu {
-			position: absolute;
-			top: 33%;
-			left: 4%;
-			width: 6%;
-			height: auto;
+		.jsm-input-message-handle {
+			margin: 0.25em auto;
+			height: 0.25em;
+			width: 10%;
+			border-radius: 3px;
+			background-color: $jsm-very-light-gray;
 		}
+		.jsm-persistent-menu {
+			width: 100%;
+			overflow: hidden;
+
+			.jsm-persistent-menu-scroller {
+				width: 300%;
+
+				.jsm-persistent-menu-page {
+					width: 33.333%;
+					float: left;
+					position: relative;
+
+					.jsm-input-prompt {
+						margin: 0 0 0 1em;
+						border-bottom: 1px solid $jsm-very-light-gray;
+					}
+					.jsm-persistent-menu-title {
+						margin: 0;
+						border-bottom: 1px solid $jsm-very-light-gray;
+						color: #030303;
+						position: relative;
+						font-weight: bold;
+						text-align: center;
+
+						&:after {
+							position: absolute;
+							top: 0.7em;
+							left: 0.5em;
+							display: block;
+							content: ' ';
+							background-image: url('data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2020%2033%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xml%3Aspace%3D%22preserve%22%20style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linecap%3Asquare%3Bstroke-miterlimit%3A1.5%3B%22%3E%3Cg%20transform%3D%22matrix(1%2C0%2C0%2C1%2C-1621.65%2C-1985.09)%22%3E%3Cg%20id%3D%22_-Curve-%22%20transform%3D%22matrix(-0.0914484%2C0%2C-0%2C0.100605%2C1739.21%2C1875.51)%22%3E%3Cpath%20d%3D%22M1114.08%2C1126.53l130.391%2C124.333l-130.065%2C124.633%22%20style%3D%22fill%3Anone%3Bstroke%3A%23007aff%3Bstroke-width%3A43.34px%3B%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+							background-size: 1.25em 1.25em;
+							height: 1.25em;
+							width: 1.25em;
+						}
+					}
+					.jsm-persistent-menu-entry {
+						.jsm-persistent-menu-text {
+							margin: 0 0 0 1em;
+							border-bottom: 1px solid $jsm-very-light-gray;
+							color: #030303;
+							position: relative;
+
+							&.jsm-has-children:after {
+								position: absolute;
+								top: 0.7em;
+								right: 0.5em;
+								display: block;
+								content: ' ';
+								background-image: url('data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2020%2033%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xml%3Aspace%3D%22preserve%22%20style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linecap%3Asquare%3Bstroke-miterlimit%3A1.5%3B%22%3E%3Cpath%20id%3D%22_-Curve-%22%20d%3D%22M3.756%2C3.756l11.924%2C12.508l-11.894%2C12.539%22%20style%3D%22fill%3Anone%3Bstroke%3A%23cecece%3Bstroke-width%3A4.17px%3B%22%2F%3E%3C%2Fsvg%3E');
+								background-size: 1em 1em;
+								height: 1em;
+								width: 1em;
+							}
+						}
+
+						&.jsm-selected {
+							background: #f0f0f0;
+						}
+
+						&:last-child {
+							.jsm-persistent-menu-text {
+								border-bottom: none;
+							}
+						}
+					}
+
+					&:after {
+						position: absolute;
+						content: ' ';
+						width: 100%;
+						height: 500%; /* account for smaller grayed out area */
+						top: 0;
+						left: 0;
+						background-color: transparent;
+						transition: all 250ms ease-in-out;
+					}
+
+					&.jsm-has-overlay:after {
+						background-color: rgba(0, 0, 0, 0.1);
+						box-shadow: inset -4px 0px 4px 0px rgba(0, 0, 0, 0.125);
+
+					}
+				}
+			}
+		}
+
 	}
 }
 

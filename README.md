@@ -95,6 +95,7 @@ Simply include `jquery.fbmessenger.min.js` and `jquery.fbmessenger.css` in your 
 | `('showGenericTemplate', templates, options)` | Shows a generic template with the given items, where `templates` is an array of objects `{ imageUrl: '...', title: '...', subtitle: '...', buttons: [ ... ] }` (see usage example).
 | `('scrollGenericTemplate', templateIndex, options)` | Scrolls the generic template item with the given index into view.
 | `('selectGenericTemplate', buttonIndex, options)` | Selects the button with the given `buttonIndex` on the generic template item which is currently in view.
+| `('selectPersistentMenu', entryIndex, options)` | Selects the persistent menu entry with the given index. If a 2nd or 3rd level menu is displayed, `-1` can be used to navigate back.
 | `('annotation', text, options)` | Shows an annotation with the given text. Note that this is not a Messenger feature, but intended to support explaining the flow of a conversation.
 | `('run')` | Executes the previously scheduled steps.
 
@@ -108,6 +109,7 @@ The `options` parameter is optional and may contain an attribute `delay`. If `de
 | `botBannerUrl` | URL of the banner image to display on the welcome page.
 | `botName` | Name of the bot, appears in the navigation bar and in the bot information at the beginning of the chat.
 | `botCategory` | Category of the bot, appears in the bot information below the bot name.
+| `persistentMenu` | The persistent menu to display, following this structure: `[{"label":"Level 1","children":[{"label":"Level 1.1","children":[{"label":"Level 1.1.1"}]}]},{"label":"Level 2",....}]`. Three levels with 3/5/5 items each are supported.
 | `likes` | A hash containing information about the likes displayed on the welcome page and bot information, using the following format: `{ totalCount: 25000 /* the total number of likes */, friendName: 'John Doe' /* the name of a friend mentioned as an example */, otherFriendsCount: 42 /* the number of other friends */ }`
 | `likesTextFn` | A function which returns the like text, overrules any setting in the `likes` hash. Called with a boolean parameter "short", indicating whether the text is needed for the short version at the top of the messages flow or the long version on the welcome page.
 | `botWelcomeMessage` | A short welcome message displayed before the user initiates the conversation by clicking "Get Started".
@@ -145,7 +147,7 @@ Better don't hold your breath for these ones. If you're in need of one of those,
 
 * "Browser"
 * Receipt template support
-* Image/audio/file attachments
+* ~~Image~~/audio/file attachments (images available since v0.0.8 2017-02-17)
 * ~~Build an editor around it and allow exporting a HTML file, for people without any coding experience~~ (available since 2016-11-28, try [BotPreview.com (Beta)](https://botpreview.com) to create a fake bot interaction with an easy to use graphical editor)
 * Airline templates (least priority, as they need lots of customization for very specific use cases)
 
@@ -154,6 +156,10 @@ Better don't hold your breath for these ones. If you're in need of one of those,
 **You're getting the error `Must call start before sending messages`**:
 
 This happens if you add events like text messages without having called `start` before; that way, the text would never be displayed. You'll often see this happening when you accidentially forget to add a `delay` option to a call when you script a chain of events for your demo.
+
+## Help wanted
+
+If you're interested in helping jQuery.fbMessenger, please [correct existing translations or add new locales](src/js/jquery.fbmessenger.js#L44). If you're unfamiliar with GitHub pull requests, feel free to send an update via email to `matt@botpreview.com`.
 
 ## Credits
 

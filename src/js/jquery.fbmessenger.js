@@ -2,7 +2,7 @@
  * jQuery.fbMessenger
  * Simulates interaction with a Facebook Messenger bot on an iPhone
  *
- * Version: 0.0.8
+ * Version: 0.0.9
  * Author: Matthias Gall <matthias.gall@digitalbreed.com>
  * Copyright (c) by Matthias Gall 2016, all rights reserved.
  *
@@ -53,7 +53,7 @@
 			likesWithCount: '$LIKES people like this including $FRIENDCOUNT friends',
 			getStartedWarning: 'When you tap Get Started, $BOTNAME will see your public info.',
 			getStartedButton: 'Get Started',
-			inputPlaceholder: 'Type a message&hellip;'
+			inputPlaceholder: 'Send a message&hellip;'
 		},
 		de: {
 			navBack: 'Startseite',
@@ -67,7 +67,7 @@
 			likesWithCount: '$LIKES Personen und $FRIENDCOUNT weiteren Freunden gefällt das',
 			getStartedWarning: 'Wenn du auf „Los geht\'s” tippst, sieht $BOTNAME deine öffentlichen Informationen.',
 			getStartedButton: 'Los geht\'s',
-			inputPlaceholder: 'Verfasse eine Nachricht&hellip;'
+			inputPlaceholder: 'Sende eine Nachricht&hellip;'
 		},
 		tr: {
 			navBack: 'Ana Sayfa',
@@ -152,7 +152,7 @@
 	}
 
 	Plugin.prototype.init = function() {
-		this.$element.append('\
+		var html = '\
 			<div class="jsm-iphone-content-wrapper">\
 			<div class="jsm-iphone-content">\
 				<div class="jsm-status-navbar">\
@@ -228,14 +228,32 @@
 						<div class="jsm-get-started-button" data-jsm-loc="getStartedButton">' + this._localize('getStartedButton') + '</div>\
 					</div>\
 					<div class="jsm-input-message jsm-hide">\
-						<img class="jsm-persistent-menu" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAaCAYAAADbhS54AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AgUFCEdwS1IvQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAARklEQVRIx+3VQQ0AIBADwZagDl0gCewVEzwuZKtg0s9aM1vSUK2dpoqz4iQlbTUfAwYMGLAPYN1LtJJWAgMGDBgwWvmulRdvjBDe+GiHkQAAAABJRU5ErkJggg==">\
-						<span data-jsm-loc="inputPlaceholder">' + this._localize('inputPlaceholder') + '</span>\
+						<div class="jsm-input-message-handle"></div>\
+						<div class="jsm-persistent-menu">\
+							<div class="jsm-persistent-menu-scroller">\
+								<div class="jsm-persistent-menu-page">\
+									<div class="jsm-input-prompt" data-jsm-loc="inputPlaceholder">' + this._localize('inputPlaceholder') + '</div>';
+		if ($.isArray(this.options.persistentMenu)) {
+			for (var i = 0, max = Math.min(3, this.options.persistentMenu.length); i < max; ++i) {
+				var item = this.options.persistentMenu[i];
+				if (item.label) {
+					html += '<div class="jsm-persistent-menu-entry' + ($.isArray(item.children) ? ' jsm-has-children' : '') + '"><div class="jsm-persistent-menu-text">' + item.label + '</div></div>'
+				}
+			}
+		}
+		html += '\
+								</div>\
+								<div class="jsm-persistent-menu-page"></div>\
+								<div class="jsm-persistent-menu-page"></div>\
+							</div>\
+						<div>\
 					</div>\
 				</div>\
 			</div>\
 			<div class="jsm-annotation-container"></div>\
 			</div>\
-		');
+		';
+		this.$element.append(html);
 
 		// Detect iOS devices
 		var agent = navigator.userAgent;
@@ -760,6 +778,68 @@
 			});
 		}
 		return this;
+	}
+
+	Plugin.prototype.selectPersistentMenu = function(menuItem, options) {
+		if (options === undefined || options.delay === undefined) {
+			var $container = this.$element.find('.jsm-persistent-menu');
+			var level = $container.data('level') || [];
+			var currentLevel = level.length;
+			var currentMenu = this.options.persistentMenu;
+			if (level[0] !== undefined) {
+				currentMenu = currentMenu[level[0]].children;
+				if (level[1] !== undefined) {
+					currentMenu = currentMenu[level[1]].children;
+				}
+			}
+			$container.find('.jsm-persistent-menu-page').removeClass('jsm-has-overlay');
+			var direction = 0, $page;
+			if (currentLevel > 0 && menuItem === -1) {
+				direction = -1;
+				$page = $container.find('.jsm-persistent-menu-page:nth-child(' + currentLevel + ')');
+				$page.find('.jsm-persistent-menu-entry').removeClass('jsm-selected');
+				level.pop();
+			} else {
+				var $menuItem = $container.find('.jsm-persistent-menu-page:nth-child(' + (currentLevel + 1) + ') .jsm-persistent-menu-entry:eq(' + menuItem + ')').addClass('jsm-selected');
+				if ($.isArray(currentMenu[menuItem].children) && currentLevel < 2) {
+					direction = 1;
+					$page = $container.find('.jsm-persistent-menu-page:nth-child(' + (currentLevel + 2) + ')').empty();
+					$page.append('<div class="jsm-persistent-menu-title">' + currentMenu[menuItem].label + '</div>');
+					for (var i = 0, max = Math.max(5, currentMenu[menuItem].children.length); i < max; ++i) {
+						$page.append('<div class="jsm-persistent-menu-entry"><div class="jsm-persistent-menu-text">' + currentMenu[menuItem].children[i].label + '</div></div>');
+					}
+					level.push(menuItem);
+				} else {
+					setTimeout(function() {
+						$container.find('.jsm-persistent-menu-entry').removeClass('jsm-selected');
+					}, 500);
+					this.message(this.options.rightUser, currentMenu[menuItem].label, { timestamp: false });
+					if (currentLevel > 0) {
+						$page = $container.find('.jsm-persistent-menu-page:first');
+						direction = -currentLevel;
+						level = [];
+					}
+				}
+			}
+			$container.data('level', level);
+			if (direction !== 0) {
+				setTimeout(function() {
+					if (direction > 0) {
+						$container.find('.jsm-persistent-menu-page').not($page).addClass('jsm-has-overlay');
+					}
+					$container.animate({
+						scrollLeft: $container.width() * (currentLevel + direction) ,
+						height: $page.height()
+					}, 500);
+				}, 250);
+			}
+		} else {
+			this.options.script.push({
+				method: 'selectPersistentMenu',
+				args: [ menuItem, this._clearOptions(options) ],
+				delay: options.delay
+			});
+		}
 	}
 
 	Plugin.prototype.setLocale = function(locale) {
