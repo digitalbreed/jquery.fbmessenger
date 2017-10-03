@@ -812,7 +812,7 @@
 				} else {
 					setTimeout(function() {
 						$container.find('.jsm-persistent-menu-entry').removeClass('jsm-selected');
-					}, 500);
+					}, 500 * this.options.timeScale);
 					this.message(this.options.rightUser, currentMenu[menuItem].label, { timestamp: false });
 					if (currentLevel > 0) {
 						$page = $container.find('.jsm-persistent-menu-page:first');
@@ -823,6 +823,7 @@
 			}
 			$container.data('level', level);
 			if (direction !== 0) {
+				var that = this;
 				setTimeout(function() {
 					if (direction > 0) {
 						$container.find('.jsm-persistent-menu-page').not($page).addClass('jsm-has-overlay');
@@ -830,7 +831,7 @@
 					$container.animate({
 						scrollLeft: $container.width() * (currentLevel + direction) ,
 						height: $page.height()
-					}, 500);
+					}, 500 * that.options.timeScale);
 				}, 250);
 			}
 		} else {
