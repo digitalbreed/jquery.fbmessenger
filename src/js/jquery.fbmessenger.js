@@ -112,7 +112,13 @@
 		if (totalCount === undefined) {
 			text = '25' + this._localize('thousands');
 		} else {
-			text = totalCount > 999 ? (totalCount / 1000).toFixed(1) + this._localize('thousands') : totalCount;
+			if (totalCount > 999999) {
+				text = (totalCount / 1000000).toFixed(1) + this._localize('millions');
+			} else if (totalCount > 999) {
+				text = (totalCount / 1000).toFixed(1) + this._localize('thousands');
+			} else {
+				text = String(totalCount);
+			}
 		}
 		return text;
 	}
