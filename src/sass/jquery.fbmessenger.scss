@@ -822,6 +822,10 @@ $message-bubble-padding: 0.6em 1em;
 					border-top-left-radius: 0.2em;
 					border-top-right-radius: 0.2em;
 					border-bottom: 1px solid #f1f0f0;
+
+					&.jsm-square {
+						padding-top: 100%;
+					}
 				}
 
 				.jsm-title {

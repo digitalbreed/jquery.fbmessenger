@@ -661,10 +661,11 @@
 		if (options === undefined || options.delay === undefined) {
 			this._checkWelcomeMessage();
 			var template = '<div class="jsm-chat-message jsm-left jsm-generic-template-wrapper"><div class="jsm-generic-template-background">';
+			var imageClass = 'jsm-image ' + (options && options.imageSquare ? 'jsm-square' : '');
 			$.each(items, function(index, item) {
 				template += '<div class="jsm-generic-template ' + (index === 0 ? 'jsm-selected' : '') + '">';
 				if (item.imageUrl) {
-					template += '<div class="jsm-image" style="background-image: url(\'' + item.imageUrl + '\');"></div>';
+					template += '<div class="' + imageClass + '" style="background-image: url(\'' + item.imageUrl + '\');"></div>';
 				}
 				template += '<div class="jsm-title"><p>' + item.title + '</p><p>' + item.subtitle + '</p></div>';
 				$.each(item.buttons, function(index2, button) {
@@ -811,7 +812,7 @@
 					direction = 1;
 					$page = $container.find('.jsm-persistent-menu-page:nth-child(' + (currentLevel + 2) + ')').empty();
 					$page.append('<div class="jsm-persistent-menu-title">' + currentMenu[menuItem].label + '</div>');
-					for (var i = 0, max = Math.max(5, currentMenu[menuItem].children.length); i < max; ++i) {
+					for (var i = 0, max = Math.min(5, currentMenu[menuItem].children.length); i < max; ++i) {
 						$page.append('<div class="jsm-persistent-menu-entry"><div class="jsm-persistent-menu-text">' + currentMenu[menuItem].children[i].label + '</div></div>');
 					}
 					level.push(menuItem);
