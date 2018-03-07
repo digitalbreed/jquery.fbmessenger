@@ -376,7 +376,7 @@
 		} else if ($user.hasClass(this.options.leftUser)) {
 			$icon = $user.find('.jsm-user-icon');
 		}
-		$wrapper = $('<div class="jsm-chat-row"></div>');
+		var $wrapper = $('<div class="jsm-chat-row"></div>');
 		// Check if a new timestamp has to be inserted
 		if (timestamp !== false) {
 			var ts = this.options.dateFormat(timestamp ? timestamp : new Date());
